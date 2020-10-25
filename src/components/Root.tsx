@@ -1,6 +1,16 @@
 import "./Root.scss";
 import * as React from "react";
+import { createStore } from "redux";
+import { WorkoutReducers } from "src/redux/redux-reducers";
+import { Provider } from "react-redux";
+import { Route, Switch } from "react-router";
+import { Intro } from "src/components/views/Intro";
+import { AuthenticatedWrapper } from "src/components/partials/AuthenticatedWrapper";
+import { BrowserRouter } from "react-router-dom";
 // import { Redirect, Route, RouteComponentProps, Switch } from "react-router";
+
+// create redux store
+const workoutStore = createStore(WorkoutReducers);
 
 /**
  * Props interface for {@link Root}.
@@ -33,9 +43,21 @@ export class Root extends React.Component<Props, State> {
      */
     public render(): JSX.Element {
         return (
-            <div className={"Root"}>
-                <h1>Boilerplate Root Element</h1>
-            </div>
+            <Provider store={workoutStore}>
+                <BrowserRouter>
+                    <Switch>
+                        <Route
+                            exact={true}
+                            path={"/"}
+                            component={Intro}
+                        />
+                        <Route
+                            path={"/admin*"}
+                            component={AuthenticatedWrapper}
+                        />
+                    </Switch>
+                </BrowserRouter>
+            </Provider>
         );
     }
 }
