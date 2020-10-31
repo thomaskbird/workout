@@ -16,8 +16,14 @@ const host = location.hostname;
 const env = host === "localhost" ? `dev` : `api`;
 
 export const api = axios.create({
-    baseURL: `ENTER_BASE_API_URL_HERE`
+    baseURL: `https://dev-iworkout.airborneartists.com/api`,
 });
+
+if (localStorage.getItem("token")) {
+    api.defaults.headers.common[
+        "Authorization"
+    ] = `Bearer ${localStorage.getItem("token")}`;
+}
 
 import { Root } from "src/components/Root";
 

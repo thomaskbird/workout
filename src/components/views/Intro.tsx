@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router";
 import "./Intro.scss";
 
 import { api } from "src/index";
@@ -9,6 +10,7 @@ const COMPONENT_NAME = "Intro";
 const Intro = () => {
     const [isSignup, setIsSignup] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [hasErrors, setHasErrors] = useState<boolean>(false);
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [email, setEmail] = useState<string>("");
@@ -34,8 +36,36 @@ const Intro = () => {
         )
             .then(response => {
                 console.log("response", response);
+
+                if (response.status) {
+                    localStorage.setItem(
+                        "token",
+                        response.data.data.user.api_token
+                    );
+
+                    localStorage.setItem(
+                        "user",
+                        JSON.stringify(response.data.data.user)
+                    );
+
+                    api.defaults.headers.common[
+                        "Authorization"
+                    ] = `Bearer ${localStorage.getItem("token")}`;
+
+                    setIsLoggedIn(true);
+                } else {
+                    setHasErrors(true);
+                    setErrorMessages([
+                        "You missed one of the required values"
+                    ]);
+                }
             })
-            .catch(e => console.log("Error: ", e))
+            .catch(e => {
+                setHasErrors(true);
+                setErrorMessages([
+                    "Your email and password combination did not match!"
+                ]);
+            })
             .then(() => setIsLoading(false));
     };
 
@@ -57,6 +87,10 @@ const Intro = () => {
                 .then(() => setIsLoading(false));
         }
     };
+
+    if(isLoggedIn) {
+        return <Redirect to={"/admin"} />
+    }
 
     return (
         <div className={COMPONENT_NAME}>
