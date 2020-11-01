@@ -1,16 +1,24 @@
 import React from "react";
 import "./ListItem.scss";
+import { Link } from "react-router-dom";
 
 const COMPONENT_NAME = "ListItem";
 
 interface ListItemProps {
     description: string;
     onRemove?(): void;
+    url?: string;
 }
 
-const ListItem = ({ description, onRemove }: ListItemProps) => (
+const ListItem = ({ description, onRemove, url }: ListItemProps) => (
     <li>
-        {description}
+        {url ? (
+            <Link to={url}>
+                {description}
+            </Link>
+        ): (
+            description
+        )}
 
         {onRemove ? (
             <span

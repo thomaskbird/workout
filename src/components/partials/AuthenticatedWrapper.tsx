@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import { Dashboard } from "src/components/views/Dashboard";
 import { AddExercise } from "src/components/views/AddExercise";
 import { ExerciseDetailView } from "src/components/views/ExerciseDetailView";
+import { AddWorkout } from "src/components/views/AddWorkout";
+import { WorkoutDetailView } from "src/components/views/WorkoutDetailView";
 
 interface AuthenticatedWrapperProps {}
 
@@ -27,7 +29,6 @@ const AuthenticatedWrapper = ({}: AuthenticatedWrapperProps) => {
                         <span className="logo-purple">Out</span>
                     </h1>
                 </Link>
-                <Link to={"/admin/exercise/add"}>+</Link>
             </div>
             <div className={`${COMPONENT_NAME}__content`}>
                 <Switch>
@@ -38,6 +39,14 @@ const AuthenticatedWrapper = ({}: AuthenticatedWrapperProps) => {
                     <Route
                         path={"/admin/exercise/:id"}
                         component={ExerciseDetailView}
+                    />
+                    <Route
+                        path={"/admin/workout/add"}
+                        component={AddWorkout}
+                    />
+                    <Route
+                        path={"/admin/workout/:id"}
+                        component={WorkoutDetailView}
                     />
                     <Route
                         component={Dashboard}
