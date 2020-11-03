@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { api } from "src/index";
 import { ErrorDisplay } from "src/components/utils/ErrorDisplay";
 import { Redirect } from "react-router";
@@ -6,21 +6,28 @@ import { Redirect } from "react-router";
 const COMPONENT_NAME = "AddExercise";
 
 const AddExercise = () => {
+    const imageRef = useRef(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [hasErrors, setHasErrors] = useState<boolean>(false);
     const [isSuccessful, setIsSuccessful] = useState<boolean>(false);
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
+    const [image, setImage] = useState<any>({});
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = (e: any) => {console.log("handleSubmit", e);
         e.preventDefault();
-        console.log("handleSubmit", e);
         setIsLoading(true);
+
+        const formData = new FormData();
+
+        formData.append("title", title);
+        formData.append("description", description);
+        formData.append("image", image);
 
         api.post(
             "/exercise/add",
-            { title, description }
+            formData
         )
             .then(response => {
                 console.log("response", response);
@@ -62,6 +69,17 @@ const AddExercise = () => {
                         id={"description"}
                         value={description}
                         onChange={e => setDescription(e.target.value)}
+                    />
+                </div>
+
+                <div className={"FormGroup"}>
+                    <label htmlFor={"image"}>Image:</label>
+                    <input
+                        ref={imageRef}
+                        type={"file"}
+                        name={"image"}
+                        id={"image"}
+                        onChange={e => setImage(e.target.files![0])}
                     />
                 </div>
 

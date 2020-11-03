@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router";
 import { Link } from "react-router-dom";
 
 // views
+import { Header } from "src/components/partials/Header";
 import { Dashboard } from "src/components/views/Dashboard";
 import { AddExercise } from "src/components/views/AddExercise";
 import { ExerciseDetailView } from "src/components/views/ExerciseDetailView";
@@ -21,15 +22,7 @@ const COMPONENT_NAME = "AuthenticatedWrapper";
 const AuthenticatedWrapper = ({}: AuthenticatedWrapperProps) => {
     return (
         <div className={COMPONENT_NAME}>
-            <div className={"Header"}>
-                <Link to={"/admin"}>
-                    <h1 className={"logo"}>
-                        <span className="logo-red">I</span>
-                        <span className="logo-blue">Work</span>
-                        <span className="logo-purple">Out</span>
-                    </h1>
-                </Link>
-            </div>
+            <Header />
             <div className={`${COMPONENT_NAME}__content`}>
                 <Switch>
                     <Route

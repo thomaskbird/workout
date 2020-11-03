@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import "./ExerciseDetailView.scss";
 import { Exercise } from "src/types/workout-types";
 import { api } from "src/index";
 import { RouteComponentProps } from "react-router";
@@ -9,6 +10,7 @@ const COMPONENT_NAME = "ExerciseDetailView";
 interface ExerciseDetailViewProps extends RouteComponentProps {}
 
 const ExerciseDetailView = ({ match }: ExerciseDetailViewProps) => {
+    const descriptionRef = useRef<HTMLTextAreaElement>(null);
     const [exercise, setExercise] = useState<Exercise | undefined>(undefined);
     const [description, setDescription] = useState<string>("");
 
@@ -37,6 +39,7 @@ const ExerciseDetailView = ({ match }: ExerciseDetailViewProps) => {
                 console.log("response", response);
                 getExercise();
                 setDescription("");
+                descriptionRef.current!.focus();
             })
             .catch((errors: any) => {
                 console.log("errors", errors);
@@ -49,11 +52,15 @@ const ExerciseDetailView = ({ match }: ExerciseDetailViewProps) => {
 
     return (
         <div className={COMPONENT_NAME}>
+            {exercise && exercise.image ? (
+                <img src={`https://dev-iworkout.airborneartists.com/img/exercises/${exercise.image}`} />
+            ): undefined}
             <h2>{exercise && exercise.title}</h2>
             <p>{exercise && exercise.description}</p>
 
             <h3>Steps</h3>
-            <ul>
+            {exercise && exercise.steps.length ? (
+                <ul>
                 {exercise && exercise.steps && exercise.steps.map(step => (
                     <ListItem
                         key={step.id}
@@ -61,7 +68,10 @@ const ExerciseDetailView = ({ match }: ExerciseDetailViewProps) => {
                         onRemove={() => console.log("remove", step.id)}
                     />
                 ))}
-            </ul>
+                </ul>
+            ) : (
+                <p>Not steps have been add yet...</p>
+            )}
 
             <h3>Add step</h3>
 
@@ -69,6 +79,7 @@ const ExerciseDetailView = ({ match }: ExerciseDetailViewProps) => {
                 <div className={"FormGroup"}>
                     <label htmlFor={"description"}>Description:</label>
                     <textarea
+                        ref={descriptionRef}
                         name={"description"}
                         id={"description"}
                         value={description}

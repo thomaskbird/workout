@@ -1,0 +1,17 @@
+.WorkoutDetailView {
+    &__row {
+        display: flex;
+    }
+
+    &__column {
+        flex: 1;
+    }
+
+    &__heading {
+        font-weight: 600;
+    }
+
+    &--remove {
+        cursor: pointer;
+    }
+}

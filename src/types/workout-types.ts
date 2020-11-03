@@ -18,6 +18,7 @@ export interface Exercise extends Timestamps {
     title: string;
     slug: string;
     description: string;
+    image: string;
     steps: ExerciseSteps[];
 }
 
