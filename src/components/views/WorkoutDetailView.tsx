@@ -22,6 +22,7 @@ const WorkoutDetailView = ({ match }: WorkoutDetailViewProps) => {
 
     const getWorkout = () => {
         api.get(
+            // @ts-ignore
             `/workouts/${match.params.id}`,
         )
             .then(response => {
@@ -52,6 +53,7 @@ const WorkoutDetailView = ({ match }: WorkoutDetailViewProps) => {
         api.post(
             `/workouts/exercises/add`,
             {
+                // @ts-ignore
                 workout_id: match.params.id,
                 exercise_id: exerciseId,
                 reps,

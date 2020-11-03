@@ -16,6 +16,7 @@ const ExerciseDetailView = ({ match }: ExerciseDetailViewProps) => {
 
     const getExercise = () => {
         api.get(
+            // @ts-ignore
             `/exercises/${match.params.id}`,
         )
             .then(response => {
