@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "./Dashboard.scss";
 import { Exercise, Workout } from "src/types/workout-types";
 import { api } from "src/index";
 import { Link } from "react-router-dom";
@@ -42,25 +43,25 @@ const Dashboard = () => {
 
     return (
         <div className={COMPONENT_NAME}>
-            <h3>
+            <h2 className={"title"}>
                 Workouts
-                <Link to={"/admin/workout/add"}>+</Link>
-            </h3>
+                <Link className={"icon"} to={"/admin/workout/add"}>+</Link>
+            </h2>
             {workouts.map(workout => (
-                <div className={`${COMPONENT_NAME}__exercise-list-item`} key={workout.id}>
+                <div className={`ListItem`} key={workout.id}>
                     <Link to={`/admin/workout/${workout.id}`}>
                         {workout.title}
                     </Link>
                 </div>
             ))}
 
-            <h3>
+            <h2 className={"title"}>
                 Exercises
-                <Link to={"/admin/exercise/add"}>+</Link>
-            </h3>
+                <Link className={"icon"} to={"/admin/exercise/add"}>+</Link>
+            </h2>
 
             {exercises.map(exercise => (
-                <div className={`${COMPONENT_NAME}__exercise-list-item`} key={exercise.id}>
+                <div className={`ListItem`} key={exercise.id}>
                     <Link to={`/admin/exercise/${exercise.id}`}>
                         {exercise.title}
                     </Link>

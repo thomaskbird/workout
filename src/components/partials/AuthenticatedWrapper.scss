@@ -1,5 +1,16 @@
 .AuthenticatedWrapper {
+    display: flex;
+    flex-direction: column;
+
+    .Header {
+        height: 7vh;
+    }
+
     &__content {
+        flex: 1;
+        height: 93vh;
         padding: 1rem;
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 }

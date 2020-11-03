@@ -42,6 +42,26 @@ h1,
 h2 {
     font-weight: 400;
     letter-spacing: 5px;
+
+    &.title {
+        font-size: 3rem;
+        font-weight: 600;
+        margin: 3rem 0 1rem;
+        letter-spacing: 10px;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #999;
+
+        .icon {
+            color: #999;
+            float: right;
+            text-decoration: none;
+            transition: all .25s ease-in;
+
+            &:hover {
+                color: #333;
+            }
+        }
+    }
 }
 
 h3,

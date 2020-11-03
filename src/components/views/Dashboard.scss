@@ -1,0 +1,16 @@
+.Dashboard {
+
+}
+
+.ListItem {
+    a {
+        color: #666;
+        text-decoration: none;
+        transition: all .25s ease-in;
+
+        &:hover {
+            color: #333;
+            font-weight: 600;
+        }
+    }
+}
