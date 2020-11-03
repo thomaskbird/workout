@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { api } from "src/index";
 import { ErrorDisplay } from "src/components/utils/ErrorDisplay";
 import { Redirect } from "react-router";
@@ -6,7 +6,6 @@ import { Redirect } from "react-router";
 const COMPONENT_NAME = "AddExercise";
 
 const AddExercise = () => {
-    const imageRef = useRef(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [hasErrors, setHasErrors] = useState<boolean>(false);
     const [isSuccessful, setIsSuccessful] = useState<boolean>(false);
@@ -75,7 +74,6 @@ const AddExercise = () => {
                 <div className={"FormGroup"}>
                     <label htmlFor={"image"}>Image:</label>
                     <input
-                        ref={imageRef}
                         type={"file"}
                         name={"image"}
                         id={"image"}
