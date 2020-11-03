@@ -4,6 +4,11 @@
 
     .Header {
         height: 7vh;
+
+        a {
+            text-align: center;
+            text-decoration: none;
+        }
     }
 
     &__content {
