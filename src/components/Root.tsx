@@ -16,7 +16,7 @@ const workoutStore = createStore(WorkoutReducers);
 /**
  * Props interface for {@link Root}.
  */
-interface Props extends RouteComponentProps {}
+interface Props {}
 
 /**
  * State interface for {@link Root}.
