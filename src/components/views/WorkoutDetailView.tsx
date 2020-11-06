@@ -16,6 +16,7 @@ const WorkoutDetailView = ({ match }: WorkoutDetailViewProps) => {
     const [exercises, setExercises] = useState<Exercise[] | undefined>(undefined);
     const [reps, setReps] = useState<number>(0.00);
     const [duration, setDuration] = useState<number>(0.00);
+    const [durationType, setDurationType] = useState<string>("");
     const [exerciseId, setExerciseId] = useState<number>(0);
 
     const headings = ["Name", "Reps", "Duration", "Actions"];
@@ -56,6 +57,7 @@ const WorkoutDetailView = ({ match }: WorkoutDetailViewProps) => {
                 // @ts-ignore
                 workout_id: match.params.id,
                 exercise_id: exerciseId,
+                duration_type: durationType,
                 reps,
                 duration,
             }
@@ -102,12 +104,12 @@ const WorkoutDetailView = ({ match }: WorkoutDetailViewProps) => {
                 <>
                 <div className={`${COMPONENT_NAME}__row`}>
                     {headings.map((heading, i) => (
-                        <div key={i} className={`${COMPONENT_NAME}__column ${COMPONENT_NAME}__heading`}>{heading}</div>
+                        <div key={i} className={`${COMPONENT_NAME}__column ${i === 0 ? COMPONENT_NAME +"__column-2" : ""} ${COMPONENT_NAME}__heading`}>{heading}</div>
                     ))}
                 </div>
                 {workout.exercises.map((row: any, i) => (
                     <div key={i} className={`${COMPONENT_NAME}__row`}>
-                        <div className={`${COMPONENT_NAME}__column`}>
+                        <div className={`${COMPONENT_NAME}__column ${COMPONENT_NAME}__column-2`}>
                             <Link to={`/admin/exercise/${row.id}`}>
                                 {row.title}
                             </Link>
@@ -160,13 +162,24 @@ const WorkoutDetailView = ({ match }: WorkoutDetailViewProps) => {
 
                 <div className={"FormGroup"}>
                     <label htmlFor={"duration"}>Duration:</label>
-                    <input
-                        type={"text"}
-                        name={"duration"}
-                        id={"duration"}
-                        value={duration}
-                        onChange={e => setDuration(e.target.value as any as number)}
-                    />
+                    <div className={"FormGroup__inline"}>
+                        <input
+                            type={"text"}
+                            name={"duration"}
+                            id={"duration"}
+                            value={duration}
+                            onChange={e => setDuration(e.target.value as any as number)}
+                        />
+                        <select
+                            name={"duration_type"}
+                            id={"duration_type"}
+                            onChange={e => setDurationType(e.target.value)}
+                        >
+                            <option value={"secs"}>Secs.</option>
+                            <option value={"minutes"}>Minutes</option>
+                            <option value={"hours"}>Hours</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div className={"FormGroup"}>
@@ -174,7 +187,7 @@ const WorkoutDetailView = ({ match }: WorkoutDetailViewProps) => {
                         type={"submit"}
                         className={"Btn Btn--primary"}
                     >
-                        Add exercise to workout
+                        Add exercise
                     </button>
                 </div>
             </form>

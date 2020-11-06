@@ -36,6 +36,29 @@ const webAppRootPath =
         ? `/${process.env.WEB_APP_ROOT_PATH}`
         : "";
 
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+    faPlus,
+    faMinus,
+    faChevronUp,
+    faChevronDown,
+    faChevronLeft,
+    faChevronRight,
+    faBars,
+    faTimes,
+} from "@fortawesome/free-solid-svg-icons";
+
+library.add(
+    faPlus,
+    faMinus,
+    faChevronUp,
+    faChevronDown,
+    faChevronLeft,
+    faChevronRight,
+    faBars,
+    faTimes,
+);
+
 /**
  * Creates the Root component
  * @returns Root component

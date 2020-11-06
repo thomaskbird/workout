@@ -36,6 +36,18 @@ h5,
 h6 {
     text-transform: uppercase;
     font-family: trumpgothicpro, sans-serif;
+
+    .icon {
+        color: #999;
+        float: right;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all .25s ease-in;
+
+        &:hover {
+            color: #333;
+        }
+    }
 }
 
 h1,
@@ -50,17 +62,6 @@ h2 {
         letter-spacing: 10px;
         padding-bottom: 1rem;
         border-bottom: 1px solid #999;
-
-        .icon {
-            color: #999;
-            float: right;
-            text-decoration: none;
-            transition: all .25s ease-in;
-
-            &:hover {
-                color: #333;
-            }
-        }
     }
 }
 
@@ -85,14 +86,23 @@ h6 {
         margin-bottom: .3rem;
     }
 
+    &__inline {
+        display: flex;
+
+        & :first-child {
+            flex: 1;
+        }
+    }
+
     input,
     select,
     textarea {
         color: #ccc;
         border-radius: 0;
-        border: 1px solid #eee;
         padding: .8rem 1rem;
+        border: 1px solid #eee;
         transition: all .25s ease-in;
+        font-family: 'Source Sans Pro', Helvetica, Arial;
 
         &:hover {
             color: #aaa;
@@ -112,7 +122,7 @@ h6 {
     color: #999;
     padding: 1rem;
     outline: none;
-    font-size: 1rem;
+    font-size: .6rem;
     cursor: pointer;
     font-weight: 300;
     border-width: 1px;

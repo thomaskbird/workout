@@ -3,10 +3,11 @@ import * as React from "react";
 import { createStore } from "redux";
 import { WorkoutReducers } from "src/redux/redux-reducers";
 import { Provider } from "react-redux";
-import { Route, Switch } from "react-router";
+import { Redirect, Route, RouteComponentProps, Switch } from "react-router";
 import { Intro } from "src/components/views/Intro";
 import { AuthenticatedWrapper } from "src/components/partials/AuthenticatedWrapper";
 import { BrowserRouter } from "react-router-dom";
+import { getToken } from "src/components/utils/Helpers";
 // import { Redirect, Route, RouteComponentProps, Switch } from "react-router";
 
 // create redux store
@@ -15,12 +16,14 @@ const workoutStore = createStore(WorkoutReducers);
 /**
  * Props interface for {@link Root}.
  */
-interface Props {}
+interface Props extends RouteComponentProps {}
 
 /**
  * State interface for {@link Root}.
  */
-interface State {}
+interface State {
+    isLoggedIn: boolean;
+}
 
 /**
  * Root is wrapped in the withRouter() Higher Order Component to allow for dynamic routing. This works by exposing the
@@ -35,14 +38,31 @@ export class Root extends React.Component<Props, State> {
         super(props, context);
 
         // Update the State with all the default values needed
-        this.state = {};
+        this.state = {
+            isLoggedIn: false
+        };
+    }
+
+    public componentDidMount(): void {
+        getToken().then(response => {
+            if(response) {
+                this.setState({
+                    isLoggedIn: true
+                });
+            }
+        });
     }
 
     /**
      * @inheritDoc
      */
     public render(): JSX.Element {
-        return (
+        const location = window.location.pathname;
+        console.log("location", location);
+
+        return this.state.isLoggedIn && window.location.pathname !== "/admin" ? (
+            <Redirect to={"/admin"} />
+        ) : (
             <Provider store={workoutStore}>
                 <BrowserRouter>
                     <Switch>

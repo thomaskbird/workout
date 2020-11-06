@@ -5,6 +5,11 @@
 
     &__column {
         flex: 1;
+        padding: .2rem;
+
+        &-2 {
+            flex: 2;
+        }
     }
 
     &__heading {

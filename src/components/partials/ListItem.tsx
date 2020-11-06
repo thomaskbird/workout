@@ -1,6 +1,7 @@
 import React from "react";
 import "./ListItem.scss";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const COMPONENT_NAME = "ListItem";
 
@@ -25,7 +26,7 @@ const ListItem = ({ description, onRemove, url }: ListItemProps) => (
                 className={`${COMPONENT_NAME}--remove`}
                 onClick={() => onRemove && onRemove()}
             >
-                x
+                <FontAwesomeIcon icon={"times"} />
             </span>
         ): undefined}
     </li>

@@ -3,7 +3,10 @@
 }
 
 .ListItem {
+    display: flex;
+
     a {
+        flex: 1;
         color: #666;
         text-decoration: none;
         transition: all .25s ease-in;
@@ -11,6 +14,38 @@
         &:hover {
             color: #333;
             font-weight: 600;
+        }
+    }
+
+    &__secondary {
+        color: #fff;
+        display: block;
+        font-size: .6rem;
+        font-weight: 600;
+        text-align: right;
+        background: #f5f5f5;
+        padding: .2rem .5rem;
+        border: 1px solid #eee;
+        box-sizing: border-box;
+
+        &.beginner {
+            background: #ffc75e;
+            border: 1px solid darken(#ffc75e, 10%);
+        }
+
+        &.intermediate {
+            background: #ff754e;
+            border: 1px solid darken(#ff754e, 10%);
+        }
+
+        &.advanced {
+            background: #d66964;
+            border: 1px solid darken(#d66964, 10%);
+        }
+
+        &.expert {
+            background: #AB0029;
+            border: 1px solid darken(#AB0029, 10%);
         }
     }
 }

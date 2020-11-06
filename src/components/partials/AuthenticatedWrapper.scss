@@ -3,8 +3,6 @@
     flex-direction: column;
 
     .Header {
-        height: 7vh;
-
         a {
             text-align: center;
             text-decoration: none;
@@ -17,5 +15,19 @@
         padding: 1rem;
         overflow-x: hidden;
         overflow-y: auto;
+    }
+
+    &__sidebar {
+        top: 0;
+        left: -100%;
+        width: 100vw;
+        height: 100vh;
+        background: #999;
+        position: absolute;
+        transition: all .4s ease-in;
+
+        &.open {
+            left: 0;
+        }
     }
 }

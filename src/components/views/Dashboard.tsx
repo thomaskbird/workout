@@ -52,6 +52,10 @@ const Dashboard = () => {
                     <Link to={`/admin/workout/${workout.id}`}>
                         {workout.title}
                     </Link>
+
+                    <span className={`ListItem__secondary ${workout.level}`}>
+                        {workout.level}
+                    </span>
                 </div>
             ))}
 

@@ -1,6 +1,17 @@
 .Header {
+    display: flex;
+    justify-content: space-between;
+
+    &__sidebar-trigger {
+        padding: .6rem 1rem;
+    }
+
     .logo {
         margin: 0;
         font-size: 2rem;
+    }
+
+    button {
+        padding: .6rem 1rem;
     }
 }
