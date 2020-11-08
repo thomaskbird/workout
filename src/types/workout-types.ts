@@ -46,4 +46,15 @@ export interface WorkoutExercise extends Timestamps {
     exercise_id: number;
 }
 
+export interface User extends Timestamps {
+    id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    profile: string | undefined;
+    status: string;
+    api_token: string;
+    reset_token: string;
+}
+
 

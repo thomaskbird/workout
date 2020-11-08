@@ -48,6 +48,11 @@ h6 {
             color: #333;
         }
     }
+
+    &.title {
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #999;
+    }
 }
 
 h1,
@@ -60,8 +65,6 @@ h2 {
         font-weight: 600;
         margin: 3rem 0 1rem;
         letter-spacing: 10px;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid #999;
     }
 }
 

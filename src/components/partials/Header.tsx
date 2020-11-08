@@ -6,10 +6,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const COMPONENT_NAME = "Header";
 
 interface HeaderProps {
+    isSidebarOpen: boolean;
     onToggleSidebar(): void;
 }
 
 const Header = ({
+    isSidebarOpen,
     onToggleSidebar
 }: HeaderProps) => {
     const handleLogout = () => {
@@ -22,7 +24,7 @@ const Header = ({
                 className={`${COMPONENT_NAME}__sidebar-trigger`}
                 onClick={() => onToggleSidebar()}
             >
-                <FontAwesomeIcon icon={"bars"} />
+                <FontAwesomeIcon icon={isSidebarOpen ? "times" : "bars"} />
             </span>
             <Link to={"/admin"}>
                 <h1 className={"logo"}>

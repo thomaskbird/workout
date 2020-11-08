@@ -58,7 +58,6 @@ export class Root extends React.Component<Props, State> {
      */
     public render(): JSX.Element {
         const location = window.location.pathname;
-        console.log("location", location);
 
         return this.state.isLoggedIn && window.location.pathname !== "/admin" ? (
             <Redirect to={"/admin"} />

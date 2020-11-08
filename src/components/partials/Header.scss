@@ -3,6 +3,9 @@
     justify-content: space-between;
 
     &__sidebar-trigger {
+        z-index: 100;
+        cursor: pointer;
+        position: relative;
         padding: .6rem 1rem;
     }
 

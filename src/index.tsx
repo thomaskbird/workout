@@ -6,7 +6,6 @@ import "./index.scss";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
 import axios from "axios";
 
 const location = window.location;

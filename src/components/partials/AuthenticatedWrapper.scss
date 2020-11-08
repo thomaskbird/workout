@@ -22,12 +22,31 @@
         left: -100%;
         width: 100vw;
         height: 100vh;
-        background: #999;
+        background: #fff;
         position: absolute;
+        padding: 3rem 1rem 1rem;
         transition: all .4s ease-in;
 
         &.open {
             left: 0;
+        }
+    }
+
+    &__menu {
+        &--item {
+            a {
+                color: #666;
+                padding: 1rem;
+                display: block;
+                text-decoration: none;
+                transition: all .5s ease-in;
+                border-left: 1px solid transparent;
+
+                &:hover {
+                    background: #f5f5f5;
+                    border-left: 1px solid #ccc;
+                }
+            }
         }
     }
 }

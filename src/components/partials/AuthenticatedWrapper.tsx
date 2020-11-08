@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./AuthenticatedWrapper.scss";
-import { Redirect, Route, Switch } from "react-router";
+import { Route, Switch } from "react-router";
 import { Link } from "react-router-dom";
 
 // views
@@ -10,34 +10,21 @@ import { AddExercise } from "src/components/views/AddExercise";
 import { ExerciseDetailView } from "src/components/views/ExerciseDetailView";
 import { AddWorkout } from "src/components/views/AddWorkout";
 import { WorkoutDetailView } from "src/components/views/WorkoutDetailView";
-import { getToken } from "src/components/utils/Helpers";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Profile } from "src/components/views/Profile";
 
 interface AuthenticatedWrapperProps {}
 
 const COMPONENT_NAME = "AuthenticatedWrapper";
 
-// todo: check if user is logged in
-// todo: if they are return children
-// todo: if not redirect to login page
-
 const AuthenticatedWrapper = ({}: AuthenticatedWrapperProps) => {
-    const [isLoggedin, setIsLoggedin] = useState<boolean>(true);
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
-    useEffect(() => {
-        getToken().then(response => {
-            if(!response) {
-                setIsLoggedin(false);
-            }
-        });
-    }, []);
-
-    return !isLoggedin ? (
-        <Redirect to={"/"} />
-    ) : (
+    return (
         <div className={COMPONENT_NAME}>
-            <Header onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+            <Header
+                isSidebarOpen={isSidebarOpen}
+                onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+            />
             <div className={`${COMPONENT_NAME}__content`}>
                 <Switch>
                     <Route
@@ -57,20 +44,32 @@ const AuthenticatedWrapper = ({}: AuthenticatedWrapperProps) => {
                         component={WorkoutDetailView}
                     />
                     <Route
+                        path={"/admin/profile"}
+                        component={Profile}
+                    />
+                    <Route
                         component={Dashboard}
                     />
                 </Switch>
             </div>
             <div className={`${COMPONENT_NAME}__sidebar ${isSidebarOpen ? "open" : ""}`}>
-                <span
-                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                >
-                    <FontAwesomeIcon icon={"times"} />
-                </span>
                 <h3>Sidebar</h3>
+
+                <div className={`${COMPONENT_NAME}__menu`}>
+                    <div className={`${COMPONENT_NAME}__menu--item`}>
+                        <Link to={"/admin/profile"} onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                            Profile
+                        </Link>
+                    </div>
+                    <div className={`${COMPONENT_NAME}__menu--item`}>
+                        <Link to={"/admin/settings"} onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                            Settings
+                        </Link>
+                    </div>
+                </div>
             </div>
         </div>
-    )
+    );
 };
 
 export { AuthenticatedWrapper };
