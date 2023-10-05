@@ -1,22 +1,40 @@
 {
-    "compilerOptions": {
-        // enables relative imports to root
-        "baseUrl": "./",
-        // used only for Coverity analysis
-        "outDir": "./out/node_modules",
-        "sourceMap": true,
-        "strict": true,
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "allowJs": true,
-        "target": "es5",
-        "jsx": "react",
-        "lib": ["DOM", "DOM.Iterable", "ES6", "ScriptHost"],
-        "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "resolveJsonModule": true
+  "compilerOptions": {
+    "allowJs": true,
+    "alwaysStrict": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "lib": [
+      "dom",
+      "es2017"
+    ],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+    "target": "esnext",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "./src/*"
+      ]
     },
-    "include": ["./src/**/*", "./.storybook/**/*", "./*"],
-    "exclude": []
+    "incremental": true
+  },
+  "exclude": [],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

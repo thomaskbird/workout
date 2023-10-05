@@ -1,4 +1,2 @@
-jest.json
-package.json
-package-lock.json
-src/generated-code
+.next
+coverage
