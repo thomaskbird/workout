@@ -1,0 +1,20 @@
+{
+  "types": [
+    {
+      "type": "feat",
+      "section": "FEATURES \uD83D\uDE80"
+    },
+    {
+      "type": "fix",
+      "section": "BUG FIXES \uD83D\uDC1E"
+    },
+    {
+      "type": "refactor",
+      "section": "Refactor \uD83E\uDE84"
+    },
+    {
+      "type": "performance",
+      "section": "Performance ⚡"
+    }
+  ]
+}
