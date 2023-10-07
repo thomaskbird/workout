@@ -3,8 +3,8 @@ import '../styles/styles.css';
 import React from 'react'
 import { AppProps } from 'next/app'
 
-import { Provider } from 'react-redux';
-import { appStore } from '~/redux/app-reducers'
+// import { Provider } from 'react-redux';
+// import { appStore } from '~/redux/app-reducers'
 import {
   AppBar,
   Box,
@@ -51,7 +51,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   };
 
   return (
-    <Provider store={appStore}>
+    <>
       <AppBar position="fixed">
         <Container>
           <Toolbar disableGutters>
@@ -183,7 +183,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
         <Component {...pageProps} />
         <div style={{ height: '5000px'}}>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </div>
       </Container>
-    </Provider>
+    </>
   )
 }
 

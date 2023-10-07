@@ -6,7 +6,7 @@ import Document, {
   NextScript,
   DocumentContext
 } from 'next/document'
-import { CSP } from '~/components/csp'
+import { CSP } from '../components/csp'
 
 export default class MyDocument extends Document {
   public static async getInitialProps (ctx: DocumentContext) {
