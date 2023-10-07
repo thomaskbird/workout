@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
 .content-container {
   margin-top: 100px;
 }

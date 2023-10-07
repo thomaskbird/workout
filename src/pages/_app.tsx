@@ -1,3 +1,7 @@
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 import '../styles/styles.css';
 
 import React from 'react'
@@ -181,7 +185,6 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 
       <Container className="content-container">
         <Component {...pageProps} />
-        <div style={{ height: '5000px'}}>Test Test Test Test Test Test Test Test Test Test Test Test Test Test Test </div>
       </Container>
     </>
   )

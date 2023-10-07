@@ -18,60 +18,28 @@ const renderFirestoreTimestamp = (timestamp: any) =>
   moment(timestamp.toDate()).format(config.momentFormat);
 
 let firestoreDb: FirestoreDatabase | null = null;
-let thomaskbird = null;
+let workoutApp = null;
 
 try {
   if (!getApps().length) {
-    thomaskbird = initializeApp(firebaseConfig);
+    workoutApp = initializeApp(firebaseConfig);
   } else {
-    thomaskbird = getApp();
+    workoutApp = getApp();
   }
 
-  firestoreDb = getFirestore(thomaskbird);
+  firestoreDb = getFirestore(workoutApp);
 } catch (e) {
   console.log("e", e);
 }
 
-const collectionJobs = collection(firestoreDb, "jobs");
-const collectionPortfolio = collection(firestoreDb, "portfolio");
-const collectionContacts = collection(firestoreDb, "contacts");
-const collectionContent = collection(firestoreDb, "content");
-const collectionContentTags = collection(firestoreDb, "contentTags");
-const collectionServices = collection(firestoreDb, "services");
-const collectionSkills = collection(firestoreDb, "skills");
-const collectionTags = collection(firestoreDb, "tags");
-const collectionUploads = collection(firestoreDb, "uploads");
+const collectionExercises = collection(firestoreDb, "exercises");
 
-const queryAllPortfolioOrdered = query(collectionPortfolio);
-const queryAllJobsOrdered = query(collectionJobs, orderBy("endAt", "desc"));
-const queryAllContactsOrdered = query(collectionContacts);
-const queryAllContentOrdered = query(collectionContent);
-const queryAllContentTagsOrdered = query(collectionContentTags);
-const queryAllServicesOrdered = query(collectionServices);
-const queryAllSkillsOrdered = query(collectionSkills);
-const queryAllTagsOrdered = query(collectionTags);
-const queryAllUploadsOrdered = query(collectionUploads);
+const queryAllExercisesOrdered = query(collectionExercises);
 
 export {
   firestoreDb,
-  thomaskbird,
+  workoutApp,
   renderFirestoreTimestamp,
-  collectionJobs,
-  collectionPortfolio,
-  collectionContacts,
-  collectionContent,
-  collectionContentTags,
-  collectionServices,
-  collectionSkills,
-  collectionTags,
-  collectionUploads,
-  queryAllJobsOrdered,
-  queryAllPortfolioOrdered,
-  queryAllContactsOrdered,
-  queryAllContentOrdered,
-  queryAllContentTagsOrdered,
-  queryAllServicesOrdered,
-  queryAllSkillsOrdered,
-  queryAllTagsOrdered,
-  queryAllUploadsOrdered,
+  collectionExercises,
+  queryAllExercisesOrdered
 };
