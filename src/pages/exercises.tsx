@@ -1,11 +1,13 @@
 import { NextPage } from 'next'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {FormGroup, Grid, TextField, Button, FormLabel} from '@mui/material';
 import styles from './exercises.module.scss';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
-import {addDoc} from '@firebase/firestore';
-import {collectionExercises} from '@app/services/firebase';
+import {addDoc, getDocs, QuerySnapshot} from '@firebase/firestore';
+import {collectionExercises, queryAllExercisesOrdered} from '@app/services/firebase';
+import {useRouter} from 'next/router';
+import {makeArrayFromSnapshot} from '@app/utils/makeNewArray';
 // import FormGroup from '@app/components/FormGroup/FormGroup';
 
 type Inputs = {
@@ -31,6 +33,20 @@ const FIELD_RULES = {
 }
 
 const ExercisesView: NextPage = () => {
+  const router = useRouter();
+
+  const [exercises, setExercises] = useState([]);
+
+  useEffect(() => {
+    const retrieveAllExercises = async () => {
+      const exercisesSnap: QuerySnapshot = await getDocs(queryAllExercisesOrdered);
+      const exercisesRecordsFromDb = makeArrayFromSnapshot(exercisesSnap);
+      setExercises(exercisesRecordsFromDb);
+    }
+
+    retrieveAllExercises();
+  }, []);
+
   // todo: Figure out how to reset form and errors on keystroke
   //   https://react-hook-form.com/docs/useform#resetOptions
   const {
@@ -40,7 +56,6 @@ const ExercisesView: NextPage = () => {
     formState: { errors }
   } = useForm<Inputs>({
     resetOptions: {
-      keepErrors: false
     }
   });
 
@@ -53,12 +68,20 @@ const ExercisesView: NextPage = () => {
     });
 
     console.log('exercise', exerciseRef.id);
+    router.reload();
   }
 
   return (
       <Grid container spacing={2}>
         <Grid item xs={12} md={8}>
           <h1>Exercise</h1>
+
+          <ul>
+            {exercises.map((exercise) => (
+              <li key={exercise.id}>{exercise.title}</li>
+            ))}
+          </ul>
+
         </Grid>
         <Grid item xs={12} md={4}>
           <h3>Sidebar</h3>
@@ -74,7 +97,7 @@ const ExercisesView: NextPage = () => {
                 {...register('title', FIELD_RULES.title)}
                 error={errors && !!errors?.title}
                 FormHelperTextProps={{
-                  classes: styles.root,
+                  classes: { root: styles.root, error: styles.error },
                   error: errors && !!errors?.title
                 }}
                 helperText={FIELD_RULES.title.minLength.message}
@@ -93,7 +116,7 @@ const ExercisesView: NextPage = () => {
                 {...register('description', FIELD_RULES.description)}
                 error={errors && !!errors?.description}
                 FormHelperTextProps={{
-                  classes: styles.root,
+                  classes: { root: styles.root, error: styles.error },
                   error: errors && !!errors?.title
                 }}
                 helperText={FIELD_RULES.description.minLength.message}
