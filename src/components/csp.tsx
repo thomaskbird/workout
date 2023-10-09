@@ -16,7 +16,7 @@ const CSP = (props: DocumentProps): any => {
     "connect-src": [
       "'self'",
       "ws://localhost:*",
-      "firestore.googleapis.com",
+      "*.googleapis.com",
       "api.thomaskbird.com",
     ],
     "style-src": ["'self'", "'unsafe-inline'"],

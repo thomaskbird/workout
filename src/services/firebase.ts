@@ -4,6 +4,7 @@ import moment from "moment";
 import config from "../config/sites";
 import { query } from "@firebase/database";
 import { FirestoreDatabase } from "@firebase/firestore-compat/dist/src/index.console";
+import {FirebaseStorage, getStorage, ref} from '@firebase/storage';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -18,6 +19,7 @@ const renderFirestoreTimestamp = (timestamp: any) =>
   moment(timestamp.toDate()).format(config.momentFormat);
 
 let firestoreDb: FirestoreDatabase | null = null;
+let firebaseStorage: FirebaseStorage | null = null;
 let workoutApp = null;
 
 try {
@@ -28,6 +30,9 @@ try {
   }
 
   firestoreDb = getFirestore(workoutApp);
+
+  // todo: may need this `gs://workout-43f00.appspot.com/` as second param
+  firebaseStorage = getStorage(workoutApp);
 } catch (e) {
   console.log("e", e);
 }
@@ -37,8 +42,9 @@ const collectionExercises = collection(firestoreDb, "exercises");
 const queryAllExercisesOrdered = query(collectionExercises);
 
 export {
-  firestoreDb,
   workoutApp,
+  firestoreDb,
+  firebaseStorage,
   renderFirestoreTimestamp,
   collectionExercises,
   queryAllExercisesOrdered
