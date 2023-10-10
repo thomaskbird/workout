@@ -20,7 +20,7 @@ const CSP = (props: DocumentProps): any => {
       "api.thomaskbird.com",
     ],
     "style-src": ["'self'", "'unsafe-inline'"],
-    "img-src": ["'self'", "api.thomaskbird.com", "google.com"],
+    "img-src": ["'self'", "talkingmeals.com", "api.thomaskbird.com", "google.com"],
   };
 
   const csp = `${Object.entries(cspSettings)

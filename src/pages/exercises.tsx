@@ -20,6 +20,7 @@ import ErrorList from '@app/components/ErrorList/ErrorList';
 import Steps from '@app/components/Steps/Steps';
 import {getDownloadURL, ref, uploadBytes} from '@firebase/storage';
 import FormGroup from '@app/components/FormGroup/FormGroup';
+import ExerciseDisplayList from '@app/components/ExerciseDisplayList/ExerciseDisplayList';
 
 export type ExercisesInputs = {
   title: string;
@@ -138,11 +139,7 @@ const ExercisesView: NextPage = () => {
       <Grid item xs={12} md={8}>
         <h1>Exercise</h1>
 
-        <ul>
-          {exercises.map((exercise) => (
-            <li key={exercise.id}>{exercise.title}</li>
-          ))}
-        </ul>
+        <ExerciseDisplayList exercises={exercises} />
 
       </Grid>
       <Grid item xs={12} md={4}>
