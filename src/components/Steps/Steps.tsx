@@ -1,7 +1,8 @@
-import {Box, FormGroup, IconButton, InputAdornment, OutlinedInput, Typography} from '@mui/material';
+import {Box, IconButton, InputAdornment, OutlinedInput, Typography} from '@mui/material';
 import styles from '@app/pages/exercises.module.scss';
 import {AddCircle, RemoveCircle} from '@mui/icons-material';
 import React, {useState} from 'react';
+import FormGroup from '@app/components/FormGroup/FormGroup';
 
 const step_base = {
   id: 1,
@@ -41,10 +42,12 @@ const Steps = () => {
             placeholder={`Step ${step.id}`}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton edge="end" onClick={handleAddStep}>
-                  <AddCircle />
-                </IconButton>
-                {step.id > 1 && (
+                {steps.length === step.id && (
+                  <IconButton edge="end" onClick={handleAddStep}>
+                    <AddCircle />
+                  </IconButton>
+                )}
+                {steps.length === step.id && steps.length !== 1 && (
                   <IconButton edge="end" onClick={() => handleRemoveStep(step.id)}>
                     <RemoveCircle />
                   </IconButton>

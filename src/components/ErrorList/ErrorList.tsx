@@ -13,9 +13,7 @@ const ErrorList = ({ field, errors }: ErrorListProps) => {
   }
 
   return (
-    <ul>
-      <li>{(errors as any)[field]?.message ?? 'Unknown error'}</li>
-    </ul>
+    <span>{(errors as any)[field]?.message ?? 'Unknown error'}</span>
   )
 }
 

@@ -1,12 +1,12 @@
 import { NextPage } from 'next'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
-  FormGroup,
   Grid,
   TextField,
   Button,
   FormLabel,
   Typography,
+  Autocomplete,
 } from '@mui/material';
 import styles from './exercises.module.scss';
 import {DriveFolderUpload} from '@mui/icons-material';
@@ -18,7 +18,8 @@ import {useRouter} from 'next/router';
 import {makeArrayFromSnapshot} from '@app/utils/makeNewArray';
 import ErrorList from '@app/components/ErrorList/ErrorList';
 import Steps from '@app/components/Steps/Steps';
-import {getDownloadURL, ref, uploadBytes, uploadBytesResumable} from '@firebase/storage';
+import {getDownloadURL, ref, uploadBytes} from '@firebase/storage';
+import FormGroup from '@app/components/FormGroup/FormGroup';
 
 export type ExercisesInputs = {
   title: string;
@@ -26,6 +27,7 @@ export type ExercisesInputs = {
   reps: number;
   sets: number;
   upload: FileList;
+  tags: string[];
 }
 
 const FIELD_RULES = {
@@ -66,23 +68,27 @@ const FIELD_RULES = {
       message: 'Max number of reps is 9999'
     }
   },
-}
+};
+
+const top100Films = [
+  { title: 'The Shawshank Redemption', year: 1994 },
+  { title: 'The Godfather', year: 1972 },
+];
 
 const ExercisesView: NextPage = () => {
   const router = useRouter();
-  const [progressPercent, setProgressPercent] = useState(0);
 
   const [exercises, setExercises] = useState([]);
 
-  // useEffect(() => {
-  //   const retrieveAllExercises = async () => {
-  //     const exercisesSnap: QuerySnapshot = await getDocs(queryAllExercisesOrdered);
-  //     const exercisesRecordsFromDb = makeArrayFromSnapshot(exercisesSnap);
-  //     setExercises(exercisesRecordsFromDb);
-  //   }
-  //
-  //   retrieveAllExercises();
-  // }, []);
+  useEffect(() => {
+    const retrieveAllExercises = async () => {
+      const exercisesSnap: QuerySnapshot = await getDocs(queryAllExercisesOrdered);
+      const exercisesRecordsFromDb = makeArrayFromSnapshot(exercisesSnap);
+      setExercises(exercisesRecordsFromDb);
+    }
+
+    retrieveAllExercises();
+  }, []);
 
   // todo: Figure out how to reset form and errors on keystroke
   //   https://react-hook-form.com/docs/useform#resetOptions
@@ -97,23 +103,27 @@ const ExercisesView: NextPage = () => {
   });
 
   const onSubmit: SubmitHandler<ExercisesInputs> = async formData => {
-    console.log('formData', formData, (formData.upload as FileList)[0].name);
+    console.log('formData', formData);
+    const baseData = {
+      title: formData.title,
+      description: formData.description,
+      sets: formData.sets,
+      reps: formData.reps,
+    };
 
     try {
-      const fileUpload = await uploadBytes(
-        ref(firebaseStorage, `exercises/${(formData.upload as FileList)[0].name}`),
-        (formData.upload as FileList)[0]
-      );
-      const fileUrl = await getDownloadURL(fileUpload.ref);
-      console.log('fileUpload', fileUpload, fileUrl);
+      if(formData.upload.length > 0) {
+        const fileUpload = await uploadBytes(
+          ref(firebaseStorage, `exercises/${(formData.upload as FileList)[0].name}`),
+          (formData.upload as FileList)[0]
+        );
+        const fileUrl = await getDownloadURL(fileUpload.ref);
+        console.log('fileUpload', fileUpload, fileUrl);
 
-      const exerciseRef = await addDoc(collectionExercises, {
-        title: formData.title,
-        description: formData.description,
-        sets: formData.sets,
-        reps: formData.reps,
-        uploads: [fileUrl],
-      });
+        baseData.uploads = [fileUrl];
+      }
+
+      const exerciseRef = await addDoc(collectionExercises, baseData);
 
       console.log('exercise', exerciseRef.id);
     } catch (e) {
@@ -139,8 +149,7 @@ const ExercisesView: NextPage = () => {
         <Typography variant="h5">Add exercise</Typography>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormGroup className={styles.formGroup}>
-            <FormLabel>Title:</FormLabel>
+          <FormGroup>
             <TextField
               fullWidth
               defaultValue={null}
@@ -156,8 +165,7 @@ const ExercisesView: NextPage = () => {
             />
           </FormGroup>
 
-          <FormGroup className={styles.formGroup}>
-            <FormLabel>Description:</FormLabel>
+          <FormGroup>
             <TextField
               fullWidth
               multiline
@@ -175,8 +183,7 @@ const ExercisesView: NextPage = () => {
             />
           </FormGroup>
 
-          <FormGroup className={styles.formGroup}>
-            <FormLabel>Sets:</FormLabel>
+          <FormGroup>
             <TextField
               fullWidth
               defaultValue={0}
@@ -193,8 +200,7 @@ const ExercisesView: NextPage = () => {
             />
           </FormGroup>
 
-          <FormGroup className={styles.formGroup}>
-            <FormLabel>Reps:</FormLabel>
+          <FormGroup>
             <TextField
               fullWidth
               defaultValue={0}
@@ -210,9 +216,27 @@ const ExercisesView: NextPage = () => {
             />
           </FormGroup>
 
+          <FormGroup>
+            <Autocomplete
+              multiple
+              id="tags"
+              options={top100Films}
+              getOptionLabel={(option) => option?.title}
+              filterSelectedOptions
+              freeSolo
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Tags"
+                  placeholder="Tag your exercise..."
+                />
+              )}
+            />
+          </FormGroup>
+
           <Steps />
 
-          <FormGroup className={styles.formGroup}>
+          <FormGroup>
             <label htmlFor="upload">
               <TextField
                 id="upload"
