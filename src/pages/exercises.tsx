@@ -80,6 +80,7 @@ const ExercisesView: NextPage = () => {
   const router = useRouter();
 
   const [exercises, setExercises] = useState([]);
+  const [steps, setSteps] = useState([]);
 
   useEffect(() => {
     const retrieveAllExercises = async () => {
@@ -104,7 +105,6 @@ const ExercisesView: NextPage = () => {
   });
 
   const onSubmit: SubmitHandler<ExercisesInputs> = async formData => {
-    console.log('formData', formData);
     const baseData = {
       title: formData.title,
       description: formData.description,
@@ -119,9 +119,11 @@ const ExercisesView: NextPage = () => {
           (formData.upload as FileList)[0]
         );
         const fileUrl = await getDownloadURL(fileUpload.ref);
-        console.log('fileUpload', fileUpload, fileUrl);
-
         baseData.uploads = [fileUrl];
+      }
+
+      if(steps.length) {
+        baseData.steps = steps;
       }
 
       const exerciseRef = await addDoc(collectionExercises, baseData);
@@ -135,14 +137,14 @@ const ExercisesView: NextPage = () => {
   }
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} md={8}>
+    <Grid container spacing={2} className={styles.exerciseWrapper}>
+      <Grid item xs={12} md={9} className={styles.exerciseDisplayWrapper}>
         <h1>Exercise</h1>
 
         <ExerciseDisplayList exercises={exercises} />
 
       </Grid>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={3}>
         <Typography variant="h5">Add exercise</Typography>
 
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -231,7 +233,7 @@ const ExercisesView: NextPage = () => {
             />
           </FormGroup>
 
-          <Steps />
+          <Steps onStepsChanged={(stepsValues) => setSteps(stepsValues)} />
 
           <FormGroup>
             <label htmlFor="upload">
