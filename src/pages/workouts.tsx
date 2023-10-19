@@ -38,12 +38,6 @@ const FIELD_RULES = {
   }
 };
 
-const MOCK_OPTIONS = [
-  { id: 1, title: 'Exercise 1'},
-  { id: 2, title: 'Exercise 2'},
-  { id: 3, title: 'Exercise 3'}
-];
-
 const WorkoutsView: NextPage = () => {
   const router = useRouter();
   const { exercises, retrieveAllExercises } = useGetExercises();
@@ -55,6 +49,7 @@ const WorkoutsView: NextPage = () => {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors }
   } = useForm<WorkoutInputs>({
     resetOptions: {
@@ -66,16 +61,17 @@ const WorkoutsView: NextPage = () => {
     const baseData = {
       title: formData.title,
       description: formData.description,
+      exercises: formData.exercises,
       createdAt: Timestamp.now()
     };
 
     try {
-      // const workoutRef: DocumentReference<WorkoutType> = await addDoc(collectionWorkouts, baseData);
-      // console.log('workoutRef', workoutRef);
+      const workoutRef: DocumentReference<WorkoutType> = await addDoc(collectionWorkouts, baseData);
+      console.log('workoutRef', workoutRef);
     } catch (e) {
       console.warn(e);
     } finally {
-      // router.reload();
+      router.reload();
     }
   }
 
@@ -127,13 +123,12 @@ const WorkoutsView: NextPage = () => {
             <Autocomplete
               multiple
               id="tags-outlined"
-              options={exerciseOptions}
-              getOptionLabel={(option) => option.title}
               filterSelectedOptions
+              options={exerciseOptions}
+              {...register('exercises')}
+              getOptionLabel={(option) => option.title}
               renderOption={(props, option, state, ownerState) => (
-                <Box component="li" {...props} key={option.id}>
-                  {ownerState.getOptionLabel(option)}
-                </Box>
+                <Box component="li" {...props} key={option.id}>{ownerState.getOptionLabel(option)}</Box>
               )}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               renderInput={(params) => (
@@ -143,6 +138,7 @@ const WorkoutsView: NextPage = () => {
                   placeholder="Select exercises..."
                 />
               )}
+              onChange={(e, val) => setValue('exercises', val)}
             />
           </FormGroup>
 
