@@ -4,7 +4,6 @@ import {
   Grid,
   TextField,
   Button,
-  FormLabel,
   Typography,
   Autocomplete,
 } from '@mui/material';
@@ -12,15 +11,16 @@ import styles from './exercises.module.scss';
 import {DriveFolderUpload} from '@mui/icons-material';
 
 import {useForm, SubmitHandler} from 'react-hook-form';
-import {addDoc, getDocs, QuerySnapshot} from '@firebase/firestore';
+import {addDoc, Timestamp} from '@firebase/firestore';
 import {collectionExercises, firebaseStorage, queryAllExercisesOrdered} from '@app/services/firebase';
 import {useRouter} from 'next/router';
-import {makeArrayFromSnapshot} from '@app/utils/makeNewArray';
 import ErrorList from '@app/components/ErrorList/ErrorList';
 import Steps from '@app/components/Steps/Steps';
 import {getDownloadURL, ref, uploadBytes} from '@firebase/storage';
 import FormGroup from '@app/components/FormGroup/FormGroup';
 import ExerciseDisplayList from '@app/components/ExerciseDisplayList/ExerciseDisplayList';
+import useGetExercises from '@app/hooks/useGetExercises';
+import {ExerciseType} from '@app/types/types';
 
 export type ExercisesInputs = {
   title: string;
@@ -78,18 +78,12 @@ const top100Films = [
 
 const ExercisesView: NextPage = () => {
   const router = useRouter();
+  const { exercises, retrieveAllExercises } = useGetExercises();
 
-  const [exercises, setExercises] = useState([]);
   const [steps, setSteps] = useState([]);
 
   useEffect(() => {
-    const retrieveAllExercises = async () => {
-      const exercisesSnap: QuerySnapshot = await getDocs(queryAllExercisesOrdered);
-      const exercisesRecordsFromDb = makeArrayFromSnapshot(exercisesSnap);
-      setExercises(exercisesRecordsFromDb);
-    }
-
-    retrieveAllExercises();
+    retrieveAllExercises()
   }, []);
 
   // todo: Figure out how to reset form and errors on keystroke
@@ -105,11 +99,12 @@ const ExercisesView: NextPage = () => {
   });
 
   const onSubmit: SubmitHandler<ExercisesInputs> = async formData => {
-    const baseData = {
+    const baseData: Omit<ExerciseType, 'id'> = {
       title: formData.title,
       description: formData.description,
       sets: formData.sets,
       reps: formData.reps,
+      createdAt: Timestamp.now()
     };
 
     try {
@@ -142,7 +137,6 @@ const ExercisesView: NextPage = () => {
         <h1>Exercise</h1>
 
         <ExerciseDisplayList exercises={exercises} />
-
       </Grid>
       <Grid item xs={12} md={3}>
         <Typography variant="h5">Add exercise</Typography>
@@ -216,6 +210,7 @@ const ExercisesView: NextPage = () => {
           </FormGroup>
 
           <FormGroup>
+            {/* todo: look into Autocomplete -> Multiple Values -> freeSolo */}
             <Autocomplete
               multiple
               id="tags"

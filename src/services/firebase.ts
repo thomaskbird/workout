@@ -37,9 +37,11 @@ try {
   console.log("e", e);
 }
 
-const collectionExercises = collection(firestoreDb, "exercises");
+const collectionExercises = collection(firestoreDb, 'exercises');
+const collectionWorkouts = collection(firestoreDb, 'workouts');
 
 const queryAllExercisesOrdered = query(collectionExercises);
+const queryAllWorkoutsOrdered = query(collectionWorkouts);
 
 export {
   workoutApp,
@@ -47,5 +49,7 @@ export {
   firebaseStorage,
   renderFirestoreTimestamp,
   collectionExercises,
-  queryAllExercisesOrdered
+  collectionWorkouts,
+  queryAllExercisesOrdered,
+  queryAllWorkoutsOrdered
 };
