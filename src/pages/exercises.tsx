@@ -78,7 +78,7 @@ const top100Films = [
 
 const ExercisesView: NextPage = () => {
   const router = useRouter();
-  const { exercises, retrieveAllExercises } = useGetExercises();
+  const { exercises, retrieveAllExercises, addExercise } = useGetExercises();
 
   const [steps, setSteps] = useState([]);
 
@@ -121,9 +121,8 @@ const ExercisesView: NextPage = () => {
         baseData.steps = steps;
       }
 
-      const exerciseRef = await addDoc(collectionExercises, baseData);
-
-      console.log('exercise', exerciseRef.id);
+      const exerciseRef = await addExercise(baseData);
+      console.log('exercise', exerciseRef);
     } catch (e) {
       console.warn(e);
     } finally {

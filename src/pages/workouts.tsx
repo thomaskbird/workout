@@ -40,8 +40,8 @@ const FIELD_RULES = {
 
 const WorkoutsView: NextPage = () => {
   const router = useRouter();
-  const { exercises, retrieveAllExercises } = useGetExercises();
-  const { workouts, retrieveAllWorkouts } = useGetWorkouts();
+  const { exercises} = useGetExercises();
+  const { isLoading: isLoadingWorkouts, workouts, addWorkouts } = useGetWorkouts();
 
   const exerciseOptions = exercises.map(exercise => ({ title: exercise.title, id: exercise.id }));
 
@@ -66,7 +66,7 @@ const WorkoutsView: NextPage = () => {
     };
 
     try {
-      const workoutRef: DocumentReference<WorkoutType> = await addDoc(collectionWorkouts, baseData);
+      const workoutRef = addWorkouts(baseData);
       console.log('workoutRef', workoutRef);
     } catch (e) {
       console.warn(e);
@@ -80,6 +80,11 @@ const WorkoutsView: NextPage = () => {
       <Grid item xs={12} md={9} className={styles.exerciseDisplayWrapper}>
         <h1>Workouts</h1>
 
+        <ul>
+          {!isLoadingWorkouts && workouts.map(workout => (
+            <li key={workout.id}>{workout.title}</li>
+          ))}
+        </ul>
       </Grid>
       <Grid item xs={12} md={3}>
         <Typography variant="h5">Add workout</Typography>
@@ -142,7 +147,7 @@ const WorkoutsView: NextPage = () => {
             />
           </FormGroup>
 
-          <Button type="submit" variant="contained">Submit</Button>
+          <Button disabled={isLoadingWorkouts} type="submit" variant="contained">Submit</Button>
         </form>
       </Grid>
     </Grid>
