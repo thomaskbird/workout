@@ -1,16 +1,16 @@
 import { NextPage } from 'next'
 import React from 'react'
-import styles from '@app/pages/exercises.module.scss';
-import {Button, Grid, TextField, Typography, Autocomplete, Box} from '@mui/material';
+import styles from '@app/pages/exercises/index.module.scss';
+import {Button, Grid, TextField, Typography, Autocomplete, Box, Card, CardContent, CardActions} from '@mui/material';
 import FormGroup from '@app/components/FormGroup/FormGroup';
 import ErrorList from '@app/components/ErrorList/ErrorList';
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {addDoc, DocumentReference, Timestamp} from '@firebase/firestore';
+import {Timestamp} from '@firebase/firestore';
 import {useRouter} from 'next/router';
-import {collectionWorkouts} from '@app/services/firebase';
-import {WorkoutType} from '@app/types/types';
-import useGetExercises from '@app/hooks/useGetExercises';
-import useGetWorkouts from '@app/hooks/useGetWorkouts';
+import useExercises from '@app/hooks/useExercises';
+import useWorkouts from '@app/hooks/useWorkouts';
+import DisplayList from '@app/components/DisplayList/DisplayList';
+import ListItemWorkout from '@app/components/ListItemWorkout/ListItemWorkout';
 
 export type WorkoutInputs = {
   title: string;
@@ -40,8 +40,8 @@ const FIELD_RULES = {
 
 const WorkoutsView: NextPage = () => {
   const router = useRouter();
-  const { exercises} = useGetExercises();
-  const { isLoading: isLoadingWorkouts, workouts, addWorkouts } = useGetWorkouts();
+  const { exercises} = useExercises();
+  const { isLoading: isLoadingWorkouts, workouts, addWorkouts } = useWorkouts();
 
   const exerciseOptions = exercises.map(exercise => ({ title: exercise.title, id: exercise.id }));
 
@@ -80,11 +80,12 @@ const WorkoutsView: NextPage = () => {
       <Grid item xs={12} md={9} className={styles.exerciseDisplayWrapper}>
         <h1>Workouts</h1>
 
-        <ul>
-          {!isLoadingWorkouts && workouts.map(workout => (
-            <li key={workout.id}>{workout.title}</li>
-          ))}
-        </ul>
+        <DisplayList
+          items={workouts}
+          renderChild={(workout) =>
+            <ListItemWorkout key={workout.id} workout={workout} />
+          }
+        />
       </Grid>
       <Grid item xs={12} md={3}>
         <Typography variant="h5">Add workout</Typography>

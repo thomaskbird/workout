@@ -26,6 +26,8 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import AdbIcon from '@mui/icons-material/Adb';
 import Link from 'next/link';
+import {useGlobalStore} from '@app/store/useGlobalStore';
+import {selectIsLoading} from '@app/store/selectors/globalStore';
 
 const pages = [
   { id: 1, link: '/', text: 'Dashboard'},
@@ -36,6 +38,7 @@ const pages = [
 const settings = ['Settings', 'Logout'];
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
+  const isLoading = useGlobalStore(selectIsLoading);
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -182,6 +185,8 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
           </Toolbar>
         </Container>
       </AppBar>
+
+      {isLoading && <Typography>Loading...</Typography>}
 
       <Container className="content-container">
         <Component {...pageProps} />

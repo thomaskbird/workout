@@ -15,8 +15,7 @@ import {
   Share as ShareIcon,
   ExpandMore as ExpandMoreIcon
 } from '@mui/icons-material';
-import {useState} from 'react';
-import styles from './ExerciseDisplayItem.module.scss';
+import styles from './ListItemExercise.module.scss';
 import moment from 'moment';
 import config from '@app/config/sites';
 
@@ -24,26 +23,9 @@ type ExerciseDisplayItemProps = {
   exercise: any;
 }
 
-type ExpandMoreProps = IconButtonProps & {
-  expand: boolean;
-}
-
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
-
-const ExerciseDisplayItem = ({ exercise }: ExerciseDisplayItemProps) => {
-  const [expanded, setExpanded] = useState(false);
-
+const ListItemExercise = ({ exercise }: ExerciseDisplayItemProps) => {
   return (
-    <Card sx={{ maxWidth: 300 }} className={styles.root}>
+    <Card className={styles.root}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: '#ccc' }} aria-label="recipe">
@@ -76,25 +58,9 @@ const ExerciseDisplayItem = ({ exercise }: ExerciseDisplayItemProps) => {
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={() => setExpanded(!expanded)}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </ExpandMore>
       </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography variant="h6">Description:</Typography>
-          <Typography paragraph>
-            {exercise.description}
-          </Typography>
-        </CardContent>
-      </Collapse>
     </Card>
   )
 }
 
-export default ExerciseDisplayItem;
+export default ListItemExercise;

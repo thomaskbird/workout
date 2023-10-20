@@ -7,20 +7,21 @@ import {
   Typography,
   Autocomplete,
 } from '@mui/material';
-import styles from './exercises.module.scss';
+import styles from './index.module.scss';
 import {DriveFolderUpload} from '@mui/icons-material';
 
 import {useForm, SubmitHandler} from 'react-hook-form';
-import {addDoc, Timestamp} from '@firebase/firestore';
-import {collectionExercises, firebaseStorage, queryAllExercisesOrdered} from '@app/services/firebase';
+import {Timestamp} from '@firebase/firestore';
+import {firebaseStorage} from '@app/services/firebase';
 import {useRouter} from 'next/router';
 import ErrorList from '@app/components/ErrorList/ErrorList';
 import Steps from '@app/components/Steps/Steps';
 import {getDownloadURL, ref, uploadBytes} from '@firebase/storage';
 import FormGroup from '@app/components/FormGroup/FormGroup';
-import ExerciseDisplayList from '@app/components/ExerciseDisplayList/ExerciseDisplayList';
-import useGetExercises from '@app/hooks/useGetExercises';
+import useExercises from '@app/hooks/useExercises';
 import {ExerciseType} from '@app/types/types';
+import ListItemExercise from '@app/components/ListItemExercise/ListItemExercise';
+import DisplayList from '@app/components/DisplayList/DisplayList';
 
 export type ExercisesInputs = {
   title: string;
@@ -78,7 +79,7 @@ const top100Films = [
 
 const ExercisesView: NextPage = () => {
   const router = useRouter();
-  const { exercises, retrieveAllExercises, addExercise } = useGetExercises();
+  const { exercises, retrieveAllExercises, addExercise } = useExercises();
 
   const [steps, setSteps] = useState([]);
 
@@ -135,7 +136,12 @@ const ExercisesView: NextPage = () => {
       <Grid item xs={12} md={9} className={styles.exerciseDisplayWrapper}>
         <h1>Exercise</h1>
 
-        <ExerciseDisplayList exercises={exercises} />
+        <DisplayList
+          items={exercises}
+          renderChild={(exercise) =>
+            <ListItemExercise key={exercise.id} exercise={exercise} />
+          }
+        />
       </Grid>
       <Grid item xs={12} md={3}>
         <Typography variant="h5">Add exercise</Typography>

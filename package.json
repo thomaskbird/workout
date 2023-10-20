@@ -56,7 +56,8 @@
     "scrollmagic": "^2.0.8",
     "ts-enum-util": "4.0.2",
     "type-fest": "0.16.0",
-    "ua-parser-js": "0.7.21"
+    "ua-parser-js": "0.7.21",
+    "zustand": "^4.4.3"
   },
   "devDependencies": {
     "@babel/core": "^7.18.13",

@@ -1,5 +1,5 @@
 import {Box, IconButton, InputAdornment, OutlinedInput, Typography} from '@mui/material';
-import styles from '@app/pages/exercises.module.scss';
+import styles from '@app/pages/exercises/index.module.scss';
 import {AddCircle, RemoveCircle} from '@mui/icons-material';
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import FormGroup from '@app/components/FormGroup/FormGroup';
