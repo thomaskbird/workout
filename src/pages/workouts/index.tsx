@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 import React from 'react'
-import styles from '@app/pages/exercises/index.module.scss';
+import styles from '@app/pages/workouts/index.module.scss';
 import {Button, Grid, TextField, Typography, Autocomplete, Box, Card, CardContent, CardActions} from '@mui/material';
 import FormGroup from '@app/components/FormGroup/FormGroup';
 import ErrorList from '@app/components/ErrorList/ErrorList';
@@ -66,8 +66,7 @@ const WorkoutsView: NextPage = () => {
     };
 
     try {
-      const workoutRef = addWorkouts(baseData);
-      console.log('workoutRef', workoutRef);
+      const workoutRef = await addWorkouts(baseData);
     } catch (e) {
       console.warn(e);
     } finally {

@@ -31,6 +31,14 @@ export type WorkoutType = {
   title: string;
   description: string;
   createdAt: Timestamp;
+  exercises: ExerciseType[];
+}
+
+export type AccountType = {
+  email: string;
+  password: string;
+  cPassword: string;
+  createdAt: Timestamp;
 }
 
 export type Prettify<T> = {

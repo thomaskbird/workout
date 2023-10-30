@@ -1,6 +1,6 @@
 import {FieldErrors} from 'react-hook-form';
 import React from 'react';
-import {ExercisesInputs} from '@app/pages/exercises/exercises';
+import {ExercisesInputs} from '@app/pages/exercises/index';
 
 type ErrorListProps = {
   field: string;

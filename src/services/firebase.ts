@@ -1,9 +1,9 @@
 import { getApp, getApps, initializeApp } from "@firebase/app";
-import { collection, getFirestore, orderBy } from "@firebase/firestore";
+import {Auth, getAuth} from '@firebase/auth';
+import {collection, Firestore, getFirestore, orderBy} from "@firebase/firestore";
 import moment from "moment";
 import config from "../config/sites";
 import { query } from "@firebase/database";
-import { FirestoreDatabase } from "@firebase/firestore-compat/dist/src/index.console";
 import {FirebaseStorage, getStorage, ref} from '@firebase/storage';
 
 const firebaseConfig = {
@@ -18,9 +18,10 @@ const firebaseConfig = {
 const renderFirestoreTimestamp = (timestamp: any) =>
   moment(timestamp.toDate()).format(config.momentFormat);
 
-let firestoreDb: FirestoreDatabase | null = null;
-let firebaseStorage: FirebaseStorage | null = null;
 let workoutApp = null;
+let firestoreDb: Firestore | null = null;
+let firebaseAuth: null | Auth = null;
+let firebaseStorage: FirebaseStorage | null = null;
 
 try {
   if (!getApps().length) {
@@ -30,6 +31,7 @@ try {
   }
 
   firestoreDb = getFirestore(workoutApp);
+  firebaseAuth = getAuth(workoutApp);
 
   // todo: may need this `gs://workout-43f00.appspot.com/` as second param
   firebaseStorage = getStorage(workoutApp);
@@ -37,8 +39,9 @@ try {
   console.log("e", e);
 }
 
-const collectionExercises = collection(firestoreDb, 'exercises');
-const collectionWorkouts = collection(firestoreDb, 'workouts');
+const collectionExercises = collection(firestoreDb!, 'exercises');
+const collectionWorkouts = collection(firestoreDb!, 'workouts');
+const collectionUsers = collection(firestoreDb!, 'users');
 
 const queryAllExercisesOrdered = query(collectionExercises);
 const queryAllWorkoutsOrdered = query(collectionWorkouts);
@@ -47,9 +50,11 @@ export {
   workoutApp,
   firestoreDb,
   firebaseStorage,
+  firebaseAuth,
   renderFirestoreTimestamp,
   collectionExercises,
   collectionWorkouts,
+  collectionUsers,
   queryAllExercisesOrdered,
   queryAllWorkoutsOrdered
 };

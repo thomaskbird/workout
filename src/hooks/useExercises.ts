@@ -5,10 +5,13 @@ import {useEffect, useState} from 'react';
 import {useGlobalStore} from '@app/store/useGlobalStore';
 import {selectIsLoading, selectSetIsLoading} from '@app/store/selectors/globalStore';
 import {ExerciseType} from '@app/types/types';
+import {useSession} from '@app/store/useSession';
+import {selectUser} from '@app/store/selectors/session';
 
 const useExercises = () => {
   const isLoading = useGlobalStore(selectIsLoading);
   const setIsLoading = useGlobalStore(selectSetIsLoading);
+  const user = useSession(selectUser);
 
   const [exercises, setExercises] = useState<ExerciseType[]>([]);
 
@@ -21,9 +24,16 @@ const useExercises = () => {
   }
 
   const addExercise = async (data: ExerciseType) => {
+    // todo: add thumbnail -> https://stackoverflow.com/questions/23640869/create-thumbnail-from-video-file-via-file-input#answer-69183556
+
+    const dataWithUser = {
+      ...data,
+      userId: user.id
+    }
+
     try {
       setIsLoading(true);
-      const exerciseRef = await addDoc(collectionExercises, data);
+      const exerciseRef = await addDoc(collectionExercises, dataWithUser);
       return Promise.resolve(exerciseRef.id);
     } catch (e) {
       console.warn(e);
