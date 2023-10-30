@@ -12,6 +12,7 @@ import {useGlobalStore} from '@app/store/useGlobalStore';
 import {selectIsLoading, selectSetIsLoading} from '@app/store/selectors/globalStore';
 import {useSession} from '@app/store/useSession';
 import {selectUser} from '@app/store/selectors/session';
+import {getUserWorkouts} from '@app/services/workouts';
 
 const useWorkouts = (id?: string) => {
   const user = useSession(selectUser);
@@ -25,7 +26,7 @@ const useWorkouts = (id?: string) => {
 
   const retrieveAllWorkouts = async () => {
     setIsLoading(true);
-    const workoutsSnapshot: QuerySnapshot = await getDocs(queryAllWorkoutsOrdered);
+    const workoutsSnapshot: QuerySnapshot = await getUserWorkouts(user.id);
     const workoutsRecordsFromDb = makeArrayFromSnapshot(workoutsSnapshot);
     setWorkouts(workoutsRecordsFromDb);
     setIsLoading(false);

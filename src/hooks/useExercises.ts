@@ -1,4 +1,4 @@
-import {addDoc, getDocs, QuerySnapshot} from '@firebase/firestore';
+import {addDoc, getDocs, QuerySnapshot, where} from '@firebase/firestore';
 import {collectionExercises, queryAllExercisesOrdered} from '@app/services/firebase';
 import {makeArrayFromSnapshot} from '@app/utils/makeNewArray';
 import {useEffect, useState} from 'react';
@@ -7,6 +7,8 @@ import {selectIsLoading, selectSetIsLoading} from '@app/store/selectors/globalSt
 import {ExerciseType} from '@app/types/types';
 import {useSession} from '@app/store/useSession';
 import {selectUser} from '@app/store/selectors/session';
+import {query} from '@firebase/database';
+import {getUserExercises} from '@app/services/exercises';
 
 const useExercises = () => {
   const isLoading = useGlobalStore(selectIsLoading);
@@ -17,7 +19,7 @@ const useExercises = () => {
 
   const retrieveAllExercises = async () => {
     setIsLoading(true);
-    const exercisesSnap: QuerySnapshot = await getDocs(queryAllExercisesOrdered);
+    const exercisesSnap: QuerySnapshot = await getUserExercises(user.id);
     const exercisesRecordsFromDb = makeArrayFromSnapshot(exercisesSnap);
     setExercises(exercisesRecordsFromDb);
     setIsLoading(false);
