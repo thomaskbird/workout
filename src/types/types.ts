@@ -50,6 +50,15 @@ export type TagType = {
   createdAt: Timestamp;
 }
 
+export type UserType = {
+  id: string;
+  uid: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  age: number;
+}
+
 export type Prettify<T> = {
   [K in keyof T]: T[K]
 } & {};

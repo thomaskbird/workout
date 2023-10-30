@@ -13,7 +13,10 @@ const pages = [
   { id: 3, link: '/exercises', text: 'Exercises'}
 ];
 
-const settings = ['Settings', 'Logout'];
+const settings = [
+  { to: '/settings', txt: 'Settings'},
+  { to: '/account', txt: 'Logout'}
+];
 
 const Header = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -152,8 +155,10 @@ const Header = () => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem key={setting.to} onClick={handleCloseUserMenu}>
+                  <Link href={setting.to}>
+                    <Typography textAlign="center">{setting.txt}</Typography>
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>

@@ -18,6 +18,7 @@ const CSP = (props: DocumentProps): any => {
       "ws://localhost:*",
       "*.googleapis.com",
       "api.thomaskbird.com",
+      "*.google.com"
     ],
     "style-src": ["'self'", "'unsafe-inline'"],
     "img-src": ["'self'", "talkingmeals.com", "api.thomaskbird.com", "google.com"],

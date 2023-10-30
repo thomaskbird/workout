@@ -27,7 +27,7 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <CSP {...this.props} />
+
         </Head>
         <body>
           <Main />

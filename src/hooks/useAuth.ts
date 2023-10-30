@@ -1,13 +1,22 @@
 import {useGlobalStore} from '@app/store/useGlobalStore';
 import {selectIsLoading, selectSetIsLoading} from '@app/store/selectors/globalStore';
 import {useState} from 'react';
-import {createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  User, UserCredential
+} from "firebase/auth";
 import {collectionUsers, firebaseAuth, firestoreDb} from '@app/services/firebase';
 import {useRouter} from 'next/router';
 import {useSession} from '@app/store/useSession';
 import {selectSetUser} from '@app/store/selectors/session';
-import {addDoc, collection, doc, getDoc, getDocs, limit, where} from '@firebase/firestore';
+import {addDoc, collection, getDocs, where} from '@firebase/firestore';
 import {query} from '@firebase/database';
+import {UserType} from '@app/types/types';
+
+const provider = new GoogleAuthProvider();
 
 const fieldsInitialState = {
   email: '',
@@ -27,7 +36,67 @@ const useAuth = () => {
 
   const [errors, setErrors] = useState<string[]>([]);
 
-  const onChange = (e) => {
+  const findUserByEmail = async (email: string) => {
+    let data;
+
+    const usersSnap = await getDocs(
+      query(
+        collection(firestoreDb, 'users'),
+        where('email', '==', email),
+      )
+    );
+
+    usersSnap.forEach(user => {
+      const userInfo: Partial<UserType> = user.data();
+
+      data = {
+        ...userInfo,
+        id: user.id
+      }
+    });
+
+    return data;
+  }
+
+  const handleSetUser = async (authData: UserCredential) => {
+    const user = authData.user;
+
+    const data = await findUserByEmail(user.email);
+
+    setUser({
+      ...authData.user,
+      ...(data as any)
+    });
+  }
+
+  const createFirestoreUser = async (user: UserCredential) => {
+    const email = user.user.email as string;
+    const existingFirestoreUser = await findUserByEmail(email);
+
+    if(!existingFirestoreUser) {
+      return await addDoc(collectionUsers, {
+        email: email,
+        uid: user.user.uid
+      });
+    }
+  }
+
+  const signInWithGoogle = async () => {
+    setIsLoading(true);
+    try {
+      const googleAuth = await signInWithPopup(firebaseAuth, provider);
+      const createdFirestoreUser = await createFirestoreUser(googleAuth);
+      await handleSetUser(googleAuth);
+
+      router.push('/');
+    } catch (e) {
+      console.warn('Error:', e);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const onChange = (e: any) => {
     setFields(prevState => {
       return {
         ...prevState,
@@ -47,28 +116,8 @@ const useAuth = () => {
 
   const login = async () => {
     try {
-      let data;
       const response = await signInWithEmailAndPassword(firebaseAuth, fields.email, fields.password);
-      const usersSnap = await getDocs(
-        query(
-          collection(firestoreDb, 'users'),
-          where('email', '==', fields.email),
-        )
-      );
-
-      usersSnap.forEach(user => {
-        const userData: any = user.data();
-
-        data = {
-          ...userData,
-          id: user.id
-        }
-      });
-
-      setUser({
-        ...response.user,
-        ...(data as any)
-      });
+      await handleSetUser(response);
 
       setFields(fieldsInitialState)
       router.push('/');
@@ -102,10 +151,7 @@ const useAuth = () => {
       const user = response?.user;
 
       if(user) {
-        const userRef = await addDoc(collectionUsers, {
-          email: fields.email,
-          uid: user.uid
-        });
+        const userRef = await createFirestoreUser(response);
       }
 
       router.reload();
@@ -126,7 +172,8 @@ const useAuth = () => {
     isLoading,
     fields,
     onChange,
-    onSubmit
+    onSubmit,
+    signInWithGoogle,
   }
 };
 

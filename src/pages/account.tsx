@@ -1,6 +1,7 @@
 import { NextPage } from 'next'
 import React, {SyntheticEvent} from 'react'
-import {Box, Button, Container, Paper, Tab, Tabs, TextField} from '@mui/material';
+import {Box, Button, Container, IconButton, Paper, Tab, Tabs, TextField} from '@mui/material';
+import GoogleIcon from '@mui/icons-material/Google';
 import styles from './account.module.scss';
 import FormGroup from '@app/components/FormGroup/FormGroup';
 import useAuth from '@app/hooks/useAuth';
@@ -14,6 +15,7 @@ const AccountView: NextPage = () => {
     setAction,
     onChange,
     onSubmit,
+    signInWithGoogle,
   } = useAuth();
 
   return (
@@ -71,12 +73,28 @@ const AccountView: NextPage = () => {
 
             <Button
               type="submit"
+              disableElevation
               variant="contained"
               onClick={onSubmit}
               disabled={isLoading}
+              style={{
+                marginRight: 20
+              }}
             >
               Submit
             </Button>
+            {action !== 'signup' && (
+              <Button
+                type="button"
+                variant="outlined"
+                color="inherit"
+                disabled={isLoading}
+                startIcon={<GoogleIcon />}
+                onClick={() => signInWithGoogle()}
+              >
+                Signin with Google
+              </Button>
+            )}
           </Box>
         </Paper>
       </Box>
