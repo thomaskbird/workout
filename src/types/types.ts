@@ -16,12 +16,13 @@ export type ExerciseStepType = {
 }
 
 export type ExerciseType = {
-  id: string;
+  id?: string;
   title: string;
   description: string;
   reps: number;
   sets: number;
   steps?: ExerciseStepType[];
+  tags?: TagType[];
   uploads?: string[];
   createdAt: Timestamp;
 }

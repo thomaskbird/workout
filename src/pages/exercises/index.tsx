@@ -1,6 +1,5 @@
 import { NextPage } from 'next'
 import React, {useEffect, useState} from 'react'
-import { v4 as uuid } from 'uuid';
 import {
   Grid,
   TextField,
@@ -20,12 +19,11 @@ import Steps from '@app/components/Steps/Steps';
 import {getDownloadURL, ref, uploadBytes} from '@firebase/storage';
 import FormGroup from '@app/components/FormGroup/FormGroup';
 import useExercises from '@app/hooks/useExercises';
-import {ExerciseType, TagType} from '@app/types/types';
+import {ExerciseStepType, ExerciseType, TagType} from '@app/types/types';
 import ListItemExercise from '@app/components/ListItemExercise/ListItemExercise';
 import DisplayList from '@app/components/DisplayList/DisplayList';
 import useTags from '@app/hooks/useTags';
-import {useSession} from '@app/store/useSession';
-import {selectUser} from '@app/store/selectors/session';
+import TagInput from '@app/components/TagInput/TagInput';
 
 export type ExercisesInputs = {
   title: string;
@@ -78,13 +76,11 @@ const FIELD_RULES = {
 
 const ExercisesView: NextPage = () => {
   const router = useRouter();
-  const user = useSession(selectUser);
   const { exercises, retrieveAllExercises, addExercise } = useExercises();
   const { tags, addTag } = useTags();
-  console.log('tags', tags);
 
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [steps, setSteps] = useState([]);
+  const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
+  const [steps, setSteps] = useState<ExerciseStepType[]>([]);
 
   useEffect(() => {
     retrieveAllExercises()
@@ -103,11 +99,12 @@ const ExercisesView: NextPage = () => {
   });
 
   const onSubmit: SubmitHandler<ExercisesInputs> = async formData => {
-    const baseData: Omit<ExerciseType, 'id'> = {
+    const baseData: Partial<ExerciseType> = {
       title: formData.title,
       description: formData.description,
       sets: formData.sets,
       reps: formData.reps,
+      tags: selectedTags.map(tag => tag.id),
       createdAt: Timestamp.now()
     };
 
@@ -217,38 +214,13 @@ const ExercisesView: NextPage = () => {
             />
           </FormGroup>
 
-          <FormGroup>
-            {/* todo: look into Autocomplete -> Multiple Values -> freeSolo */}
-            <Autocomplete
-              multiple
-              id="tags"
-              options={tags}
-              getOptionLabel={(option) => option?.tag}
-              filterSelectedOptions
-              value={selectedTags}
-              freeSolo
-              onChange={(evt, val) => {
-                const tagsToBeAdded: TagType[] = [];
-                val.forEach(async (item: string | TagType) => {
-                  if(typeof item === 'string') {
-                    const newTag = await addTag(item);
-                    tagsToBeAdded.push(newTag);
-                  } else {
-                    tagsToBeAdded.push(item);
-                  }
-                });
-
-                setSelectedTags(tagsToBeAdded);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Tags"
-                  placeholder="Tag your exercise..."
-                />
-              )}
-            />
-          </FormGroup>
+          <TagInput
+            indentifier="tags"
+            label="Tagging"
+            placeholder="Add tags..."
+            selectedTags={selectedTags}
+            onSetSelectedTags={(tags) => setSelectedTags(tags)}
+          />
 
           <Steps onStepsChanged={(stepsValues) => setSteps(stepsValues)} />
 

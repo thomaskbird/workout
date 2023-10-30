@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
-import {addDoc, getDocs, QuerySnapshot, Timestamp} from '@firebase/firestore';
-import {collectionTags, queryAllTagsOrdered} from '@app/services/firebase';
+import {addDoc, doc, getDoc, getDocs, QuerySnapshot, Timestamp} from '@firebase/firestore';
+import {collectionTags, firestoreDb, queryAllTagsOrdered} from '@app/services/firebase';
 import {makeArrayFromSnapshot} from '@app/utils/makeNewArray';
 import {useGlobalStore} from '@app/store/useGlobalStore';
 import {selectIsLoading, selectSetIsLoading} from '@app/store/selectors/globalStore';
@@ -47,14 +47,16 @@ const useTags = (): UseTagsReturn => {
       createdAt: Timestamp.now()
     };
     try {
-      const tag = await addDoc(collectionTags, tagData);
-      if(tag?.id) {
+      const tagRef = await addDoc(collectionTags, tagData);
+      if(tagRef?.id) {
         retrieveAllTags();
       }
 
+      const newlyAddedTag = await getDoc(doc(firestoreDb, 'tags', tagRef.id));
+
       return {
-        ...tag,
-        id: tag?.id
+        ...newlyAddedTag.data(),
+        id: tagRef?.id
       }
     } catch (e) {
       console.warn('Error:',e);
