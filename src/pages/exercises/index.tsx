@@ -1,5 +1,6 @@
 import { NextPage } from 'next'
 import React, {useEffect, useState} from 'react'
+import { v4 as uuid } from 'uuid';
 import {
   Grid,
   TextField,
@@ -22,6 +23,9 @@ import useExercises from '@app/hooks/useExercises';
 import {ExerciseType} from '@app/types/types';
 import ListItemExercise from '@app/components/ListItemExercise/ListItemExercise';
 import DisplayList from '@app/components/DisplayList/DisplayList';
+import useTags from '@app/hooks/useTags';
+import {useSession} from '@app/store/useSession';
+import {selectUser} from '@app/store/selectors/session';
 
 export type ExercisesInputs = {
   title: string;
@@ -72,14 +76,12 @@ const FIELD_RULES = {
   },
 };
 
-const top100Films = [
-  { title: 'The Shawshank Redemption', year: 1994 },
-  { title: 'The Godfather', year: 1972 },
-];
-
 const ExercisesView: NextPage = () => {
   const router = useRouter();
+  const user = useSession(selectUser);
   const { exercises, retrieveAllExercises, addExercise } = useExercises();
+  const { tags, setTags } = useTags();
+  console.log('tags', tags);
 
   const [steps, setSteps] = useState([]);
 
@@ -219,10 +221,32 @@ const ExercisesView: NextPage = () => {
             <Autocomplete
               multiple
               id="tags"
-              options={top100Films}
-              getOptionLabel={(option) => option?.title}
+              options={tags}
+              getOptionLabel={(option) => option?.tag}
               filterSelectedOptions
+              value={tags}
               freeSolo
+              onChange={(evt, val) => {
+                const newTags = [];
+
+                val.forEach(item => {
+                  if(typeof item === 'string') {
+                    newTags.push({
+                      tag: item,
+                      slug: item,
+                      userId: user.id,
+                      createdAt: Timestamp.now()
+                    })
+                  } else {
+                    newTags.push(item);
+                  }
+                });
+
+                setTags([
+                  ...tags,
+                  ...newTags
+                ]);
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}

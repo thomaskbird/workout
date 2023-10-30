@@ -57,6 +57,7 @@
     "ts-enum-util": "4.0.2",
     "type-fest": "0.16.0",
     "ua-parser-js": "0.7.21",
+    "uuid": "^9.0.1",
     "zustand": "^4.4.3"
   },
   "devDependencies": {
@@ -79,6 +80,7 @@
     "@types/react-dom": "^18.0",
     "@types/scrollmagic": "^2.0.2",
     "@types/ua-parser-js": "0.7.33",
+    "@types/uuid": "^9.0.6",
     "@typescript-eslint/eslint-plugin": "6.7.4",
     "@typescript-eslint/parser": "6.7.4",
     "@zeit/next-source-maps": "0.0.4-canary.1",

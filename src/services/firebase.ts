@@ -42,9 +42,11 @@ try {
 const collectionExercises = collection(firestoreDb!, 'exercises');
 const collectionWorkouts = collection(firestoreDb!, 'workouts');
 const collectionUsers = collection(firestoreDb!, 'users');
+const collectionTags = collection(firestoreDb, 'tags');
 
 const queryAllExercisesOrdered = query(collectionExercises);
 const queryAllWorkoutsOrdered = query(collectionWorkouts);
+const queryAllTagsOrdered = query(collectionTags, orderBy('slug', 'desc'));
 
 export {
   workoutApp,
@@ -55,6 +57,8 @@ export {
   collectionExercises,
   collectionWorkouts,
   collectionUsers,
+  collectionTags,
   queryAllExercisesOrdered,
-  queryAllWorkoutsOrdered
+  queryAllWorkoutsOrdered,
+  queryAllTagsOrdered,
 };
