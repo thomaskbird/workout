@@ -1,19 +1,11 @@
 import { NextPage } from 'next'
-import React, {SyntheticEvent, useEffect, useState} from 'react'
+import React, {SyntheticEvent} from 'react'
 import {Box, Button, Container, Paper, Tab, Tabs, TextField} from '@mui/material';
 import styles from './account.module.scss';
 import FormGroup from '@app/components/FormGroup/FormGroup';
-import ErrorList from '@app/components/ErrorList/ErrorList';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {AccountType, ExerciseType} from '@app/types/types';
-import {Timestamp} from '@firebase/firestore';
-import {getDownloadURL, ref, uploadBytes} from '@firebase/storage';
-import {firebaseStorage} from '@app/services/firebase';
 import useAuth from '@app/hooks/useAuth';
-import {useRouter} from 'next/router';
 
 const AccountView: NextPage = () => {
-  const router = useRouter();
   const {
     isLoading,
     errors,
@@ -23,8 +15,6 @@ const AccountView: NextPage = () => {
     onChange,
     onSubmit,
   } = useAuth();
-
-  useEffect(() => console.log('action', action), [action]);
 
   return (
     <Container>

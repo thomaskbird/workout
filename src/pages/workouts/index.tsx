@@ -57,7 +57,6 @@ const WorkoutsView: NextPage = () => {
   });
 
   const onSubmit: SubmitHandler<WorkoutInputs> = async formData => {
-    console.log('formData', formData);
     const baseData = {
       title: formData.title,
       description: formData.description,

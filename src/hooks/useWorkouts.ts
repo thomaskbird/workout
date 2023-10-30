@@ -1,4 +1,4 @@
-import {addDoc, doc, DocumentReference, getDoc, getDocs, QuerySnapshot} from '@firebase/firestore';
+import {addDoc, doc, getDoc, getDocs, QuerySnapshot} from '@firebase/firestore';
 import {
   collectionWorkouts,
   firestoreDb,
@@ -54,8 +54,6 @@ const useWorkouts = (id?: string) => {
       ...data,
       userId: user.id
     }
-
-    console.log('dataWithUser', dataWithUser);
 
     try {
       setIsLoading(true);
