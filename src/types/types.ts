@@ -41,6 +41,14 @@ export type AccountType = {
   createdAt: Timestamp;
 }
 
+export type TagType = {
+  id: string;
+  tag: string;
+  slug: string;
+  userId: string;
+  createdAt: Timestamp;
+}
+
 export type Prettify<T> = {
   [K in keyof T]: T[K]
 } & {};

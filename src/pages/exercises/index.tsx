@@ -20,7 +20,7 @@ import Steps from '@app/components/Steps/Steps';
 import {getDownloadURL, ref, uploadBytes} from '@firebase/storage';
 import FormGroup from '@app/components/FormGroup/FormGroup';
 import useExercises from '@app/hooks/useExercises';
-import {ExerciseType} from '@app/types/types';
+import {ExerciseType, TagType} from '@app/types/types';
 import ListItemExercise from '@app/components/ListItemExercise/ListItemExercise';
 import DisplayList from '@app/components/DisplayList/DisplayList';
 import useTags from '@app/hooks/useTags';
@@ -80,9 +80,10 @@ const ExercisesView: NextPage = () => {
   const router = useRouter();
   const user = useSession(selectUser);
   const { exercises, retrieveAllExercises, addExercise } = useExercises();
-  const { tags, setTags } = useTags();
+  const { tags, addTag } = useTags();
   console.log('tags', tags);
 
+  const [selectedTags, setSelectedTags] = useState([]);
   const [steps, setSteps] = useState([]);
 
   useEffect(() => {
@@ -224,28 +225,20 @@ const ExercisesView: NextPage = () => {
               options={tags}
               getOptionLabel={(option) => option?.tag}
               filterSelectedOptions
-              value={tags}
+              value={selectedTags}
               freeSolo
               onChange={(evt, val) => {
-                const newTags = [];
-
-                val.forEach(item => {
+                const tagsToBeAdded: TagType[] = [];
+                val.forEach(async (item: string | TagType) => {
                   if(typeof item === 'string') {
-                    newTags.push({
-                      tag: item,
-                      slug: item,
-                      userId: user.id,
-                      createdAt: Timestamp.now()
-                    })
+                    const newTag = await addTag(item);
+                    tagsToBeAdded.push(newTag);
                   } else {
-                    newTags.push(item);
+                    tagsToBeAdded.push(item);
                   }
                 });
 
-                setTags([
-                  ...tags,
-                  ...newTags
-                ]);
+                setSelectedTags(tagsToBeAdded);
               }}
               renderInput={(params) => (
                 <TextField
