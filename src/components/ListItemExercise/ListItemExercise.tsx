@@ -18,6 +18,8 @@ import {
 import styles from './ListItemExercise.module.scss';
 import moment from 'moment';
 import config from '@app/config/sites';
+import Link from 'next/link';
+import StyledLink from '@app/components/StyledLink/StyledLink';
 
 type ExerciseDisplayItemProps = {
   exercise: any;
@@ -28,8 +30,8 @@ const ListItemExercise = ({ exercise }: ExerciseDisplayItemProps) => {
     <Card className={styles.root}>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: '#ccc' }} aria-label="recipe">
-            R
+          <Avatar sx={{ bgcolor: '#ccc' }} aria-label={exercise.title} title={exercise.title}>
+            {exercise.title.charAt(0)}
           </Avatar>
         }
         action={
@@ -37,7 +39,7 @@ const ListItemExercise = ({ exercise }: ExerciseDisplayItemProps) => {
             <MoreVertIcon />
           </IconButton>
         }
-        title={exercise.title}
+        title={<StyledLink base="/exercises/" id={exercise.id} title={exercise.title} />}
         subheader={exercise?.createdAt ? moment(exercise?.createdAt.toDate()).format(config.momentFormatWoTimestamp) : 'Unknown'}
       />
       {exercise?.thumbnail && (

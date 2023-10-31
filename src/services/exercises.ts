@@ -8,6 +8,5 @@ export const getUserExercises = async (userId: string): Promise<ExerciseType[]> 
   const exercisesSnap = await getDocs(
     query(collectionExercises, where('userId', '==', userId))
   );
-  const exercisesRecordsFromDb = makeArrayFromSnapshot(exercisesSnap);
-  return exercisesRecordsFromDb;
+  return makeArrayFromSnapshot(exercisesSnap);
 }

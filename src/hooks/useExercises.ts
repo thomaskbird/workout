@@ -1,5 +1,5 @@
-import {addDoc, QuerySnapshot} from '@firebase/firestore';
-import {collectionExercises} from '@app/services/firebase';
+import {addDoc, doc, getDoc, QuerySnapshot} from '@firebase/firestore';
+import {collectionExercises, firestoreDb} from '@app/services/firebase';
 import {makeArrayFromSnapshot} from '@app/utils/makeNewArray';
 import {useEffect, useState} from 'react';
 import {useGlobalStore} from '@app/store/useGlobalStore';
@@ -21,6 +21,22 @@ const useExercises = () => {
     const exercisesRecordsFromDb = await getUserExercises(user.id);
     setExercises(exercisesRecordsFromDb);
     setIsLoading(false);
+  }
+
+  const retrieveExerciseById = async (id: string) => {
+    try {
+      setIsLoading(true);
+      const exerciseSnapshot: QuerySnapshot = await getDoc(doc(firestoreDb, 'exercises', id));
+
+      return {
+        ...exerciseSnapshot.data(),
+        id: exerciseSnapshot.id
+      }
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const addExercise = async (data: Partial<ExerciseType>) => {
@@ -50,7 +66,8 @@ const useExercises = () => {
     isLoading,
     exercises,
     addExercise,
-    retrieveAllExercises
+    retrieveAllExercises,
+    retrieveExerciseById,
   }
 }
 

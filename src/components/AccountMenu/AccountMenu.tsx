@@ -7,6 +7,11 @@ import {Logout, PersonAdd, Settings} from '@mui/icons-material';
 import {useSession} from '@app/store/useSession';
 import {selectUser} from '@app/store/selectors/session';
 
+type UserDisplayType = {
+  name: string;
+  photo?: string;
+}
+
 const AccountMenu = () => {
   const user = useSession(selectUser);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -15,8 +20,8 @@ const AccountMenu = () => {
   useEffect(() => {
     if(user) {
       setUserDisplay({
-        name: user.displayName,
-        photo: user.photoURL
+        name: user.displayName!,
+        photo: user.photoURL ?? undefined
       })
     }
   }, [user]);
