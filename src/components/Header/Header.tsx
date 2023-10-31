@@ -5,7 +5,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {useSession} from '@app/store/useSession';
+import {selectUser} from '@app/store/selectors/session';
 
 const pages = [
   { id: 1, link: '/', text: 'Dashboard'},
@@ -18,9 +20,25 @@ const settings = [
   { to: '/account', txt: 'Logout'}
 ];
 
+type UserDisplayType = {
+  name: string;
+  photo: string;
+}
+
 const Header = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const user = useSession(selectUser);
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [userDisplay, setUserDisplay] = useState<UserDisplayType | undefined>(undefined);
+
+  useEffect(() => {
+    if(user) {
+      setUserDisplay({
+        name: user.displayName,
+        photo: user.photoURL
+      })
+    }
+  }, [user]);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -135,7 +153,12 @@ const Header = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                {userDisplay && (
+                  <Avatar
+                    alt={userDisplay.name}
+                    src={userDisplay?.photo ? userDisplay?.photo : '/static/images/avatar/2.jpg'}
+                  />
+                )}
               </IconButton>
             </Tooltip>
             <Menu

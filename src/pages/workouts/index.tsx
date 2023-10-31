@@ -78,12 +78,16 @@ const WorkoutsView: NextPage = () => {
       <Grid item xs={12} md={9} className={styles.exerciseDisplayWrapper}>
         <h1>Workouts</h1>
 
-        <DisplayList
-          items={workouts}
-          renderChild={(workout) =>
-            <ListItemWorkout key={workout.id} workout={workout} />
-          }
-        />
+        {workouts.length ? (
+          <DisplayList
+            items={workouts}
+            renderChild={(workout) =>
+              <ListItemWorkout key={workout.id} workout={workout} />
+            }
+          />
+        ) : (
+          <Typography>No workouts, create one?</Typography>
+        )}
       </Grid>
       <Grid item xs={12} md={3}>
         <Typography variant="h5">Add workout</Typography>

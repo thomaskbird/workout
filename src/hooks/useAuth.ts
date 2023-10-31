@@ -6,8 +6,9 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
-  User, UserCredential
+  UserCredential
 } from "firebase/auth";
+import Cookies from 'js-cookie';
 import {collectionUsers, firebaseAuth, firestoreDb} from '@app/services/firebase';
 import {useRouter} from 'next/router';
 import {useSession} from '@app/store/useSession';
@@ -61,8 +62,13 @@ const useAuth = () => {
   const handleSetUser = async (authData: UserCredential) => {
     const user = authData.user;
 
-    const data = await findUserByEmail(user.email);
+    const data = await findUserByEmail(user.email as string);
 
+    // todo: determine if we need to set cookies
+    // Cookies.set('user', JSON.stringify({
+    //   ...authData.user,
+    //   ...(data as any)
+    // }));
     setUser({
       ...authData.user,
       ...(data as any)
