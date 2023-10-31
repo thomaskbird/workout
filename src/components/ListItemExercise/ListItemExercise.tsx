@@ -40,12 +40,16 @@ const ListItemExercise = ({ exercise }: ExerciseDisplayItemProps) => {
         title={exercise.title}
         subheader={exercise?.createdAt ? moment(exercise?.createdAt.toDate()).format(config.momentFormatWoTimestamp) : 'Unknown'}
       />
-      <CardMedia
-        component="img"
-        height="194"
-        image="https://talkingmeals.com/wp-content/uploads/2021/08/Birria-Tacos-Recipe-POST-OH-vert-Sauce-on-left-e1628267862856.jpg"
-        alt="Paella dish"
-      />
+      {exercise?.thumbnail && (
+        <CardMedia
+          component="img"
+          alt={exercise.title}
+          image={exercise.thumbnail}
+          style={{
+            maxHeight: '200px'
+          }}
+        />
+      )}
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {exercise.description}

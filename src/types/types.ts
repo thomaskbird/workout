@@ -23,6 +23,8 @@ export type ExerciseType = {
   sets: number;
   steps?: ExerciseStepType[];
   tags?: string[];
+  thumbnail: string;
+  video: string;
   uploads?: string[];
   createdAt: Timestamp;
 }

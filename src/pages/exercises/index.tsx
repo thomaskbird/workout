@@ -5,7 +5,6 @@ import {
   TextField,
   Button,
   Typography,
-  Autocomplete,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import styles from './index.module.scss';
@@ -25,6 +24,7 @@ import ListItemExercise from '@app/components/ListItemExercise/ListItemExercise'
 import DisplayList from '@app/components/DisplayList/DisplayList';
 import useTags from '@app/hooks/useTags';
 import TagInput from '@app/components/TagInput/TagInput';
+import generateVideoThumbnail from '@app/utils/generateVideoThumbnail';
 
 export type ExercisesInputs = {
   title: string;
@@ -90,7 +90,6 @@ const VisuallyHiddenInput = styled('input')({
 const ExercisesView: NextPage = () => {
   const router = useRouter();
   const { exercises, retrieveAllExercises, addExercise } = useExercises();
-  const { tags, addTag } = useTags();
 
   const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
   const [steps, setSteps] = useState<ExerciseStepType[]>([]);
@@ -128,7 +127,9 @@ const ExercisesView: NextPage = () => {
           (formData.upload as FileList)[0]
         );
         const fileUrl = await getDownloadURL(fileUpload.ref);
-        baseData.uploads = [fileUrl];
+        const fileThumbnail = await generateVideoThumbnail(formData.upload[0]);
+        baseData.thumbnail = fileThumbnail;
+        baseData.video = fileUrl;
       }
 
       if(steps.length) {
