@@ -1,9 +1,12 @@
+import {User} from '@firebase/auth';
+import {UserType} from '@app/types/types';
+
 export type SessionState = {
-  user: any;
+  user: User & UserType;
 }
 
 export type SessionActions = {
-  setUser: (user: any) => void;
+  setUser: (user: SessionState['user']) => void;
 }
 
 export type Session = SessionState & SessionActions;

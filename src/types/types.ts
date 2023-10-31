@@ -17,15 +17,16 @@ export type ExerciseStepType = {
 
 export type ExerciseType = {
   id?: string;
+  userId: string;
   title: string;
   description: string;
-  reps: number;
   sets: number;
+  reps?: number;
+  duration?: number;
   steps?: ExerciseStepType[];
   tags?: string[];
   thumbnail: string;
   video: string;
-  uploads?: string[];
   createdAt: Timestamp;
 }
 
@@ -59,6 +60,8 @@ export type UserType = {
   firstName: string;
   lastName: string;
   age: number;
+  favExercises?: string[];
+  favWorkouts?: string[];
 }
 
 export type Prettify<T> = {

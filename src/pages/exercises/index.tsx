@@ -6,7 +6,6 @@ import {
   Button,
   Typography,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import styles from './index.module.scss';
 import {DriveFolderUpload} from '@mui/icons-material';
 
@@ -22,15 +21,16 @@ import useExercises from '@app/hooks/useExercises';
 import {ExerciseStepType, ExerciseType, TagType} from '@app/types/types';
 import ListItemExercise from '@app/components/ListItemExercise/ListItemExercise';
 import DisplayList from '@app/components/DisplayList/DisplayList';
-import useTags from '@app/hooks/useTags';
 import TagInput from '@app/components/TagInput/TagInput';
 import generateVideoThumbnail from '@app/utils/generateVideoThumbnail';
+import HiddenInput from '@app/components/HiddenInput/HiddenInput';
 
 export type ExercisesInputs = {
   title: string;
   description: string;
-  reps: number;
   sets: number;
+  reps: number;
+  duration: number;
   upload: FileList;
   tags: string[];
 }
@@ -62,30 +62,7 @@ const FIELD_RULES = {
     },
 
   },
-  reps: {
-    required: true,
-    minLength: {
-      value: 1,
-      message: 'Min number of reps is 1',
-    },
-    maxLength: {
-      value: 4,
-      message: 'Max number of reps is 9999'
-    }
-  },
 };
-
-const VisuallyHiddenInput = styled('input')({
-  clip: 'rect(0 0 0 0)',
-  clipPath: 'inset(50%)',
-  height: 1,
-  overflow: 'hidden',
-  position: 'absolute',
-  bottom: 0,
-  left: 0,
-  whiteSpace: 'nowrap',
-  width: 1,
-});
 
 const ExercisesView: NextPage = () => {
   const router = useRouter();
@@ -116,6 +93,7 @@ const ExercisesView: NextPage = () => {
       description: formData.description,
       sets: formData.sets,
       reps: formData.reps,
+      duration: formData.duration,
       tags: selectedTags.map(tag => tag.id),
       createdAt: Timestamp.now()
     };
@@ -137,7 +115,6 @@ const ExercisesView: NextPage = () => {
       }
 
       const exerciseRef = await addExercise(baseData);
-      console.log('exercise', exerciseRef);
     } catch (e) {
       console.warn(e);
     } finally {
@@ -218,13 +195,29 @@ const ExercisesView: NextPage = () => {
               defaultValue={0}
               label="Enter number of reps per set..."
               variant="outlined"
-              {...register('reps', FIELD_RULES.reps)}
+              {...register('reps')}
               error={errors && !!errors?.reps}
               FormHelperTextProps={{
                 classes: { root: styles.root, error: styles.error },
                 error: errors && !!errors?.reps
               }}
               helperText={<ErrorList field="reps" errors={errors} />}
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <TextField
+              fullWidth
+              defaultValue={0}
+              label="Enter duration set..."
+              variant="outlined"
+              {...register('duration')}
+              error={errors && !!errors?.duration}
+              FormHelperTextProps={{
+                classes: { root: styles.root, error: styles.error },
+                error: errors && !!errors?.duration
+              }}
+              helperText={<ErrorList field="duration" errors={errors} />}
             />
           </FormGroup>
 
@@ -241,7 +234,7 @@ const ExercisesView: NextPage = () => {
           <FormGroup>
             <Button component="label" color="inherit" variant="outlined" startIcon={<DriveFolderUpload/>}>
               Upload image or video
-              <VisuallyHiddenInput
+              <HiddenInput
                 id="upload"
                 defaultValue={undefined}
                 {...register('upload')}

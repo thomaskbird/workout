@@ -1,5 +1,5 @@
-import {addDoc, getDocs, QuerySnapshot, where} from '@firebase/firestore';
-import {collectionExercises, queryAllExercisesOrdered} from '@app/services/firebase';
+import {addDoc, QuerySnapshot} from '@firebase/firestore';
+import {collectionExercises} from '@app/services/firebase';
 import {makeArrayFromSnapshot} from '@app/utils/makeNewArray';
 import {useEffect, useState} from 'react';
 import {useGlobalStore} from '@app/store/useGlobalStore';
@@ -7,7 +7,6 @@ import {selectIsLoading, selectSetIsLoading} from '@app/store/selectors/globalSt
 import {ExerciseType} from '@app/types/types';
 import {useSession} from '@app/store/useSession';
 import {selectUser} from '@app/store/selectors/session';
-import {query} from '@firebase/database';
 import {getUserExercises} from '@app/services/exercises';
 
 const useExercises = () => {
@@ -19,16 +18,15 @@ const useExercises = () => {
 
   const retrieveAllExercises = async () => {
     setIsLoading(true);
-    const exercisesSnap: QuerySnapshot = await getUserExercises(user.id);
-    const exercisesRecordsFromDb = makeArrayFromSnapshot(exercisesSnap);
+    const exercisesRecordsFromDb = await getUserExercises(user.id);
     setExercises(exercisesRecordsFromDb);
     setIsLoading(false);
   }
 
-  const addExercise = async (data: ExerciseType) => {
+  const addExercise = async (data: Partial<ExerciseType>) => {
     // todo: add thumbnail -> https://stackoverflow.com/questions/23640869/create-thumbnail-from-video-file-via-file-input#answer-69183556
 
-    const dataWithUser = {
+    const dataWithUser: Partial<ExerciseType> = {
       ...data,
       userId: user.id
     }
