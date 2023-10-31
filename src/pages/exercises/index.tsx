@@ -7,6 +7,7 @@ import {
   Typography,
   Autocomplete,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import styles from './index.module.scss';
 import {DriveFolderUpload} from '@mui/icons-material';
 
@@ -73,6 +74,18 @@ const FIELD_RULES = {
     }
   },
 };
+
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
+  height: 1,
+  overflow: 'hidden',
+  position: 'absolute',
+  bottom: 0,
+  left: 0,
+  whiteSpace: 'nowrap',
+  width: 1,
+});
 
 const ExercisesView: NextPage = () => {
   const router = useRouter();
@@ -225,22 +238,15 @@ const ExercisesView: NextPage = () => {
           <Steps onStepsChanged={(stepsValues) => setSteps(stepsValues)} />
 
           <FormGroup>
-            <label htmlFor="upload">
-              <TextField
+            <Button component="label" color="inherit" variant="outlined" startIcon={<DriveFolderUpload/>}>
+              Upload image or video
+              <VisuallyHiddenInput
                 id="upload"
-                fullWidth
-                defaultValue={0}
-                label="Select a file..."
-                variant="outlined"
+                defaultValue={undefined}
                 {...register('upload')}
-                style={{ display: 'none' }}
                 type="file"
               />
-
-              <Button color="inherit" variant="contained" startIcon={<DriveFolderUpload/>}>
-                Upload image or video
-              </Button>
-            </label>
+            </Button>
           </FormGroup>
 
           <Button type="submit" variant="contained">Submit</Button>

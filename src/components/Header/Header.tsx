@@ -3,11 +3,8 @@ import AdbIcon from '@mui/icons-material/Adb';
 import Link from 'next/link';
 import MenuIcon from '@mui/icons-material/Menu';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import Avatar from '@mui/material/Avatar';
-import React, {useEffect, useState} from 'react';
-import {useSession} from '@app/store/useSession';
-import {selectUser} from '@app/store/selectors/session';
+import React, {useState} from 'react';
+import AccountMenu from '@app/components/AccountMenu/AccountMenu';
 
 const pages = [
   { id: 1, link: '/', text: 'Dashboard'},
@@ -15,44 +12,15 @@ const pages = [
   { id: 3, link: '/exercises', text: 'Exercises'}
 ];
 
-const settings = [
-  { to: '/settings', txt: 'Settings'},
-  { to: '/account', txt: 'Logout'}
-];
-
-type UserDisplayType = {
-  name: string;
-  photo: string;
-}
-
 const Header = () => {
-  const user = useSession(selectUser);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const [userDisplay, setUserDisplay] = useState<UserDisplayType | undefined>(undefined);
-
-  useEffect(() => {
-    if(user) {
-      setUserDisplay({
-        name: user.displayName,
-        photo: user.photoURL
-      })
-    }
-  }, [user]);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   return (
@@ -150,42 +118,7 @@ const Header = () => {
             ))}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {userDisplay && (
-                  <Avatar
-                    alt={userDisplay.name}
-                    src={userDisplay?.photo ? userDisplay?.photo : '/static/images/avatar/2.jpg'}
-                  />
-                )}
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting.to} onClick={handleCloseUserMenu}>
-                  <Link href={setting.to}>
-                    <Typography textAlign="center">{setting.txt}</Typography>
-                  </Link>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          <AccountMenu />
         </Toolbar>
       </Container>
     </AppBar>

@@ -22,7 +22,7 @@ export type ExerciseType = {
   reps: number;
   sets: number;
   steps?: ExerciseStepType[];
-  tags?: TagType[];
+  tags?: string[];
   uploads?: string[];
   createdAt: Timestamp;
 }
