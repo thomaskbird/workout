@@ -40,8 +40,6 @@ const useExercises = () => {
   }
 
   const addExercise = async (data: Partial<ExerciseType>) => {
-    // todo: add thumbnail -> https://stackoverflow.com/questions/23640869/create-thumbnail-from-video-file-via-file-input#answer-69183556
-
     const dataWithUser: Partial<ExerciseType> = {
       ...data,
       userId: user.id

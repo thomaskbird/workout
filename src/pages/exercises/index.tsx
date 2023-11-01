@@ -95,7 +95,7 @@ const ExercisesView: NextPage = () => {
       sets: formData.sets,
       reps: formData.reps,
       duration: formData.duration,
-      tags: selectedTags.map(tag => tag.id),
+      tags: selectedTags.map(tag => ({ id: tag.id, tag: tag.tag })),
       createdAt: Timestamp.now()
     };
 

@@ -15,6 +15,8 @@ export type ExerciseStepType = {
   val: string;
 }
 
+export type ExerciseTagType = Pick<TagType, 'id' | 'tag'>;
+
 export type ExerciseType = {
   id?: string;
   userId: string;
@@ -24,7 +26,7 @@ export type ExerciseType = {
   reps?: number;
   duration?: number;
   steps?: ExerciseStepType[];
-  tags?: string[];
+  tags?: ExerciseTagType[];
   thumbnail: string;
   video: string;
   createdAt: Timestamp;
