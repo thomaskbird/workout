@@ -24,7 +24,6 @@ import DisplayList from '@app/components/DisplayList/DisplayList';
 import TagInput from '@app/components/TagInput/TagInput';
 import generateVideoThumbnail from '@app/utils/generateVideoThumbnail';
 import HiddenInput from '@app/components/HiddenInput/HiddenInput';
-import Link from 'next/link';
 
 export type ExercisesInputs = {
   title: string;

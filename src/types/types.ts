@@ -36,6 +36,7 @@ export type WorkoutType = {
   id: string;
   title: string;
   description: string;
+  duration: number;
   createdAt: Timestamp;
   exercises: ExerciseType[];
 }

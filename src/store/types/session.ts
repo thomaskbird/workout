@@ -2,7 +2,7 @@ import {User} from '@firebase/auth';
 import {UserType} from '@app/types/types';
 
 export type SessionState = {
-  user: User & UserType;
+  user: User & UserType | null;
 }
 
 export type SessionActions = {

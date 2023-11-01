@@ -1,9 +1,7 @@
-import {addDoc, doc, getDoc, getDocs, QuerySnapshot} from '@firebase/firestore';
+import {addDoc, doc, getDoc, QuerySnapshot} from '@firebase/firestore';
 import {
   collectionWorkouts,
   firestoreDb,
-  queryAllExercisesOrdered,
-  queryAllWorkoutsOrdered
 } from '@app/services/firebase';
 import {makeArrayFromSnapshot} from '@app/utils/makeNewArray';
 import {useEffect, useState} from 'react';

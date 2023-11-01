@@ -3,22 +3,18 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  CardMedia, Collapse,
+  CardMedia,
   IconButton,
-  IconButtonProps, styled,
   Typography
 } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
 import {
   MoreVert as MoreVertIcon,
   Favorite as FavoriteIcon,
   Share as ShareIcon,
-  ExpandMore as ExpandMoreIcon
 } from '@mui/icons-material';
 import styles from './ListItemExercise.module.scss';
 import moment from 'moment';
 import config from '@app/config/sites';
-import Link from 'next/link';
 import StyledLink from '@app/components/StyledLink/StyledLink';
 
 type ExerciseDisplayItemProps = {
@@ -29,11 +25,11 @@ const ListItemExercise = ({ exercise }: ExerciseDisplayItemProps) => {
   return (
     <Card className={styles.root}>
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: '#ccc' }} aria-label={exercise.title} title={exercise.title}>
-            {exercise.title.charAt(0)}
-          </Avatar>
-        }
+        // avatar={
+        //   <Avatar sx={{ bgcolor: '#ccc' }} aria-label={exercise.title} title={exercise.title}>
+        //     {exercise.title.charAt(0)}
+        //   </Avatar>
+        // }
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />

@@ -3,9 +3,12 @@ import { useState } from "react";
 import {Box, Divider, IconButton, ListItemIcon, Menu, MenuItem} from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
-import {Logout, PersonAdd, Settings} from '@mui/icons-material';
+import {Logout, Settings} from '@mui/icons-material';
 import {useSession} from '@app/store/useSession';
 import {selectUser} from '@app/store/selectors/session';
+import {accountManuPaperProps} from '@app/components/AccountMenu/AccountMenu.config';
+import Link from 'next/link';
+import useAuth from '@app/hooks/useAuth';
 
 type UserDisplayType = {
   name: string;
@@ -13,7 +16,10 @@ type UserDisplayType = {
 }
 
 const AccountMenu = () => {
+  const { signout } = useAuth();
+
   const user = useSession(selectUser);
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [userDisplay, setUserDisplay] = useState<UserDisplayType | undefined>(undefined);
 
@@ -33,6 +39,11 @@ const AccountMenu = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleSignout = () => {
+    handleClose();
+    signout();
+  }
 
   return (
     <React.Fragment>
@@ -61,49 +72,25 @@ const AccountMenu = () => {
         anchorEl={anchorEl}
         onClose={handleClose}
         onClick={handleClose}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-            mt: 1.5,
-            '& .MuiAvatar-root': {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
-            '&:before': {
-              content: '""',
-              display: 'block',
-              position: 'absolute',
-              top: 0,
-              right: 14,
-              width: 10,
-              height: 10,
-              bgcolor: 'background.paper',
-              transform: 'translateY(-50%) rotate(45deg)',
-              zIndex: 0,
-            },
-          },
-        }}
+        PaperProps={accountManuPaperProps}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
-        </MenuItem>
+        <Link href="/profile">
+          <MenuItem onClick={handleClose}>
+            <Avatar /> Profile
+          </MenuItem>
+        </Link>
         <Divider />
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
+        <Link href="/settings">
+          <MenuItem onClick={handleClose}>
+            <ListItemIcon>
+              <Settings fontSize="small" />
+            </ListItemIcon>
+            Settings
+          </MenuItem>
+        </Link>
+        <MenuItem onClick={handleSignout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

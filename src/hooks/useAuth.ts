@@ -6,7 +6,8 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   GoogleAuthProvider,
-  UserCredential
+  UserCredential,
+  signOut
 } from "firebase/auth";
 import Cookies from 'js-cookie';
 import {collectionUsers, firebaseAuth, firestoreDb} from '@app/services/firebase';
@@ -171,6 +172,12 @@ const useAuth = () => {
     }
   }
 
+  const signout = async () => {
+    setUser(null);
+    await signOut(firebaseAuth);
+    return router.push('/account');
+  }
+
   return {
     action,
     errors,
@@ -180,6 +187,7 @@ const useAuth = () => {
     onChange,
     onSubmit,
     signInWithGoogle,
+    signout,
   }
 };
 

@@ -1,4 +1,4 @@
-import {Chip, Divider, Grid, Typography} from '@mui/material';
+import {Button, Chip, Divider, Grid, Typography} from '@mui/material';
 import {NextPage} from 'next';
 import styles from '@app/pages/exercises/index.module.scss';
 import React, {useEffect, useState} from 'react';
@@ -7,7 +7,9 @@ import useExercises from '@app/hooks/useExercises';
 import {ExerciseStepType, ExerciseTagType, ExerciseType, TagType} from '@app/types/types';
 import VideoPlayer from '@app/components/VideoPlayer/VideoPlayer';
 import moment from 'moment/moment';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import config from '@app/config/sites';
+import Link from 'next/link';
 
 type ExerciseViewProps = {};
 
@@ -32,6 +34,12 @@ const ExerciseView: NextPage<ExerciseViewProps> = ({}) => {
   return (
     <Grid container spacing={2} className={styles.exerciseWrapper}>
       <Grid item xs={12} md={9} className={styles.exerciseDisplayWrapper}>
+        <Link href="/exercises">
+          <Button color="inherit" startIcon={<ChevronLeft />}>
+            Back
+          </Button>
+        </Link>
+
         <Typography variant="body2" color="text.secondary">Created by: {exercise?.userId}</Typography>
         <Typography variant="body2" color="text.secondary">Created on: {moment(exercise?.createdAt.toDate()).format(config.momentFormatWoTimestamp)}</Typography>
 

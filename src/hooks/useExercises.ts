@@ -1,6 +1,5 @@
 import {addDoc, doc, getDoc, QuerySnapshot} from '@firebase/firestore';
 import {collectionExercises, firestoreDb} from '@app/services/firebase';
-import {makeArrayFromSnapshot} from '@app/utils/makeNewArray';
 import {useEffect, useState} from 'react';
 import {useGlobalStore} from '@app/store/useGlobalStore';
 import {selectIsLoading, selectSetIsLoading} from '@app/store/selectors/globalStore';
