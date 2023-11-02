@@ -1,8 +1,8 @@
-import {useSession} from '@app/store/useSession';
-import {selectSetUser, selectUser} from '@app/store/selectors/session';
 import { firestoreDb } from '@app/services/firebase';
-import {addDoc, doc, updateDoc, getDoc, QuerySnapshot} from '@firebase/firestore';
-import { CompiledUserTypes } from '@app/store/types/session';
+import { selectSetUser, selectUser } from '@app/store/selectors/session';
+import { useSession } from '@app/store/useSession';
+import addOrRemove from '@app/utils/addOrRemove';
+import { doc, updateDoc } from '@firebase/firestore';
 
 const useUser = () => {
   const user = useSession(selectUser);
@@ -10,14 +10,7 @@ const useUser = () => {
 
   const updateUserField = async (field: 'favExercises' | 'favWorkouts', id: string): Promise<boolean> => {
     try {
-      let newIds: string[] = [];
-      let existing: string[] = user[field] ?? [];
-
-      if (!existing.includes(id)) {
-        newIds = [...existing, id];
-      } else {
-        newIds = existing.filter(fav => fav !== id);
-      }
+      const newIds = addOrRemove(user[field], id);
 
       const userRef = doc(firestoreDb, 'users', user!.id);
       await updateDoc(userRef, {

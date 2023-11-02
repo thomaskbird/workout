@@ -1,29 +1,29 @@
-import { NextPage } from 'next'
-import React, {useEffect, useState} from 'react'
+import { DriveFolderUpload } from '@mui/icons-material';
 import {
+  Button,
   Grid,
   TextField,
-  Button,
   Typography,
 } from '@mui/material';
+import { NextPage } from 'next';
+import { useState } from 'react';
 import styles from './index.module.scss';
-import {DriveFolderUpload} from '@mui/icons-material';
 
-import {useForm, SubmitHandler} from 'react-hook-form';
-import {Timestamp} from '@firebase/firestore';
-import {firebaseStorage} from '@app/services/firebase';
-import {useRouter} from 'next/router';
-import ErrorList from '@app/components/ErrorList/ErrorList';
-import Steps from '@app/components/Steps/Steps';
-import {getDownloadURL, ref, uploadBytes} from '@firebase/storage';
-import FormGroup from '@app/components/FormGroup/FormGroup';
-import useExercises from '@app/hooks/useExercises';
-import {ExerciseStepType, ExerciseType, TagType} from '@app/types/types';
-import ListItemExercise from '@app/components/ListItemExercise/ListItemExercise';
 import DisplayList from '@app/components/DisplayList/DisplayList';
-import TagInput from '@app/components/TagInput/TagInput';
-import generateVideoThumbnail from '@app/utils/generateVideoThumbnail';
+import ErrorList from '@app/components/ErrorList/ErrorList';
+import FormGroup from '@app/components/FormGroup/FormGroup';
 import HiddenInput from '@app/components/HiddenInput/HiddenInput';
+import ListItemExercise from '@app/components/ListItemExercise/ListItemExercise';
+import Steps from '@app/components/Steps/Steps';
+import TagInput from '@app/components/TagInput/TagInput';
+import useExercises from '@app/hooks/useExercises';
+import { firebaseStorage } from '@app/services/firebase';
+import { ExerciseStepType, ExerciseType, TagType } from '@app/types/types';
+import generateVideoThumbnail from '@app/utils/generateVideoThumbnail';
+import { Timestamp } from '@firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from '@firebase/storage';
+import { useRouter } from 'next/router';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 export type ExercisesInputs = {
   title: string;
@@ -66,7 +66,7 @@ const FIELD_RULES = {
 
 const ExercisesView: NextPage = () => {
   const router = useRouter();
-  const { exercises, addExercise } = useExercises();
+  const { isLoading, exercises, addExercise } = useExercises();
 
   const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
   const [steps, setSteps] = useState<ExerciseStepType[]>([]);
@@ -239,7 +239,7 @@ const ExercisesView: NextPage = () => {
             </Button>
           </FormGroup>
 
-          <Button type="submit" variant="contained">Submit</Button>
+          <Button type="submit" variant="contained" disabled={isLoading}>Submit</Button>
         </form>
 
       </Grid>

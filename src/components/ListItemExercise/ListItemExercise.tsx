@@ -1,3 +1,14 @@
+import StyledLink from '@app/components/StyledLink/StyledLink';
+import config from '@app/config/sites';
+import useUser from '@app/hooks/useUser';
+import { selectUser } from '@app/store/selectors/session';
+import { useSession } from '@app/store/useSession';
+import { ExerciseType } from '@app/types/types';
+import {
+  Delete as DeleteIcon,
+  Favorite as FavoriteIcon,
+  Share as ShareIcon
+} from '@mui/icons-material';
 import {
   Card,
   CardActions,
@@ -7,23 +18,13 @@ import {
   IconButton,
   Typography
 } from '@mui/material';
-import {
-  Favorite as FavoriteIcon,
-  Share as ShareIcon,
-  Delete as DeleteIcon
-} from '@mui/icons-material';
-import styles from './ListItemExercise.module.scss';
 import moment from 'moment';
-import config from '@app/config/sites';
-import StyledLink from '@app/components/StyledLink/StyledLink';
 import ListItemMenu from '../ListItemMenu/ListItemMenu';
 import { MenuItemType } from '../ListItemMenu/ListItemMenu.types';
-import useUser from '@app/hooks/useUser';
-import { useSession } from '@app/store/useSession';
-import { selectUser } from '@app/store/selectors/session';
+import styles from './ListItemExercise.module.scss';
 
-type ExerciseDisplayItemProps = {
-  exercise: any;
+type ListItemExerciseProps = {
+  exercise: ExerciseType;
 }
 
 const listItems: MenuItemType[] = [
@@ -38,7 +39,7 @@ const listItems: MenuItemType[] = [
   }
 ];
 
-const ListItemExercise = ({ exercise }: ExerciseDisplayItemProps) => {
+const ListItemExercise = ({ exercise }: ListItemExerciseProps) => {
   const { updateUserField } = useUser();
   const user = useSession(selectUser);
   const userFavs = user?.favExercises;
