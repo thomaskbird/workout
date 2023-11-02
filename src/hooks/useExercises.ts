@@ -56,8 +56,10 @@ const useExercises = () => {
   }
 
   useEffect(() => {
-    retrieveAllExercises();
-  }, []);
+    if (user) {
+      retrieveAllExercises(); 
+    }
+  }, [user]);
 
   return {
     isLoading,

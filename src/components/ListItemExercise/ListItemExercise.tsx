@@ -8,20 +8,45 @@ import {
   Typography
 } from '@mui/material';
 import {
-  MoreVert as MoreVertIcon,
   Favorite as FavoriteIcon,
   Share as ShareIcon,
+  Delete as DeleteIcon
 } from '@mui/icons-material';
 import styles from './ListItemExercise.module.scss';
 import moment from 'moment';
 import config from '@app/config/sites';
 import StyledLink from '@app/components/StyledLink/StyledLink';
+import ListItemMenu from '../ListItemMenu/ListItemMenu';
+import { MenuItemType } from '../ListItemMenu/ListItemMenu.types';
+import useUser from '@app/hooks/useUser';
+import { useSession } from '@app/store/useSession';
+import { selectUser } from '@app/store/selectors/session';
 
 type ExerciseDisplayItemProps = {
   exercise: any;
 }
 
+const listItems: MenuItemType[] = [
+  {
+    icon: <DeleteIcon fontSize="small" />,
+    onAction: () => {
+      console.log('onAction()');
+    },
+    text: 'Delete'
+  }
+];
+
 const ListItemExercise = ({ exercise }: ExerciseDisplayItemProps) => {
+  const { updateUserField } = useUser();
+  const user = useSession(selectUser);
+  const userFavs = user?.favExercises;
+  console.log('userFavs', userFavs);
+
+  const handleFavoriteToggle = async () => {
+    console.log('handleFavorite');
+    const result = await updateUserField('favExercises', exercise.id);
+  }
+
   return (
     <Card className={styles.root}>
       <CardHeader
@@ -30,11 +55,7 @@ const ListItemExercise = ({ exercise }: ExerciseDisplayItemProps) => {
         //     {exercise.title.charAt(0)}
         //   </Avatar>
         // }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
+        action={<ListItemMenu listItems={listItems} />}
         title={<StyledLink base="/exercises/" id={exercise.id} title={exercise.title} />}
         subheader={exercise?.createdAt ? moment(exercise?.createdAt.toDate()).format(config.momentFormatWoTimestamp) : 'Unknown'}
       />
@@ -54,8 +75,8 @@ const ListItemExercise = ({ exercise }: ExerciseDisplayItemProps) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+        <IconButton aria-label="add to favorites" onClick={handleFavoriteToggle}>
+          <FavoriteIcon style={{ color: user?.favExercises?.includes(exercise.id) ? 'red' : '#aaa' }} />
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />

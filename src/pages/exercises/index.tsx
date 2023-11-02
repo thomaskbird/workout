@@ -66,14 +66,10 @@ const FIELD_RULES = {
 
 const ExercisesView: NextPage = () => {
   const router = useRouter();
-  const { exercises, retrieveAllExercises, addExercise } = useExercises();
+  const { exercises, addExercise } = useExercises();
 
   const [selectedTags, setSelectedTags] = useState<TagType[]>([]);
   const [steps, setSteps] = useState<ExerciseStepType[]>([]);
-
-  useEffect(() => {
-    retrieveAllExercises()
-  }, []);
 
   // todo: Figure out how to reset form and errors on keystroke
   //   https://react-hook-form.com/docs/useform#resetOptions
