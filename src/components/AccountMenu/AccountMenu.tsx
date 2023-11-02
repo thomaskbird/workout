@@ -3,12 +3,13 @@ import { useState } from "react";
 import {Box, Divider, IconButton, ListItemIcon, Menu, MenuItem} from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
-import {Logout, Settings} from '@mui/icons-material';
+import {Logout, Settings, Favorite} from '@mui/icons-material';
 import {useSession} from '@app/store/useSession';
 import {selectUser} from '@app/store/selectors/session';
 import {accountManuPaperProps} from '@app/components/AccountMenu/AccountMenu.config';
 import Link from 'next/link';
 import useAuth from '@app/hooks/useAuth';
+import styles from './AccountMenu.module.scss';
 
 type UserDisplayType = {
   name: string;
@@ -46,7 +47,7 @@ const AccountMenu = () => {
   }
 
   return (
-    <React.Fragment>
+    <div className={styles.root}>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         <Tooltip title="Account settings">
           <IconButton
@@ -72,9 +73,13 @@ const AccountMenu = () => {
         anchorEl={anchorEl}
         onClose={handleClose}
         onClick={handleClose}
+        disablePortal={true}
         PaperProps={accountManuPaperProps}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        sx={{
+          width: 300
+        }}
       >
         <Link href="/profile">
           <MenuItem onClick={handleClose}>
@@ -82,6 +87,12 @@ const AccountMenu = () => {
           </MenuItem>
         </Link>
         <Divider />
+        <MenuItem>
+          <ListItemIcon>
+            <Favorite fontSize="small" />
+          </ListItemIcon>
+          My Favorites
+        </MenuItem>
         <Link href="/settings">
           <MenuItem onClick={handleClose}>
             <ListItemIcon>
@@ -97,7 +108,7 @@ const AccountMenu = () => {
           Logout
         </MenuItem>
       </Menu>
-    </React.Fragment>
+    </div>
   );
 }
 
