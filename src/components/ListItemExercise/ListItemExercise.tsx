@@ -30,7 +30,9 @@ const listItems: MenuItemType[] = [
   {
     icon: <DeleteIcon fontSize="small" />,
     onAction: () => {
-      console.log('onAction()');
+      if (window.confirm('Are you sure you want to delete this? It can\'t be undone')) {
+        console.log('onAction()'); 
+      }
     },
     text: 'Delete'
   }
@@ -40,12 +42,8 @@ const ListItemExercise = ({ exercise }: ExerciseDisplayItemProps) => {
   const { updateUserField } = useUser();
   const user = useSession(selectUser);
   const userFavs = user?.favExercises;
-  console.log('userFavs', userFavs);
 
-  const handleFavoriteToggle = async () => {
-    console.log('handleFavorite');
-    const result = await updateUserField('favExercises', exercise.id);
-  }
+  const handleFavoriteToggle = async () => await updateUserField('favExercises', exercise.id);
 
   return (
     <Card className={styles.root}>
@@ -76,7 +74,7 @@ const ListItemExercise = ({ exercise }: ExerciseDisplayItemProps) => {
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites" onClick={handleFavoriteToggle}>
-          <FavoriteIcon style={{ color: user?.favExercises?.includes(exercise.id) ? 'red' : '#aaa' }} />
+          <FavoriteIcon style={{ color: user?.favExercises?.includes(exercise.id) ? '#ff3766' : '#aaa' }} />
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />
