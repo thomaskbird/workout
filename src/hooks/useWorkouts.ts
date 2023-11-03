@@ -1,16 +1,16 @@
-import {addDoc, doc, getDoc, QuerySnapshot} from '@firebase/firestore';
 import {
   collectionWorkouts,
   firestoreDb,
 } from '@app/services/firebase';
-import {makeArrayFromSnapshot} from '@app/utils/makeNewArray';
-import {useEffect, useState} from 'react';
-import {WorkoutType} from '@app/types/types';
-import {useGlobalStore} from '@app/store/useGlobalStore';
-import {selectIsLoading, selectSetIsLoading} from '@app/store/selectors/globalStore';
-import {useSession} from '@app/store/useSession';
-import {selectUser} from '@app/store/selectors/session';
-import {getUserWorkouts} from '@app/services/workouts';
+import { getUserWorkouts } from '@app/services/workouts';
+import { selectIsLoading, selectSetIsLoading } from '@app/store/selectors/globalStore';
+import { selectUser } from '@app/store/selectors/session';
+import { useGlobalStore } from '@app/store/useGlobalStore';
+import { useSession } from '@app/store/useSession';
+import { WorkoutType } from '@app/types/types';
+import { makeArrayFromSnapshot } from '@app/utils/makeNewArray';
+import { QuerySnapshot, addDoc, doc, getDoc } from '@firebase/firestore';
+import { useEffect, useState } from 'react';
 
 const useWorkouts = (id?: string) => {
   const user = useSession(selectUser);
@@ -70,7 +70,9 @@ const useWorkouts = (id?: string) => {
   }, []);
 
   useEffect(() => {
-    retrieveWorkoutById();
+    if(workoutId) {
+      retrieveWorkoutById();
+    }
   }, [workoutId]);
 
   return {

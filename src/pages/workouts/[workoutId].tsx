@@ -1,11 +1,12 @@
-import {NextPage} from 'next';
-import {Grid, Typography} from '@mui/material';
-import {useRouter} from 'next/router';
-import useWorkouts from '@app/hooks/useWorkouts';
-import React, {useEffect} from 'react';
-import styles from '@app/pages/exercises/index.module.scss';
-import ListItemExercise from '@app/components/ListItemExercise/ListItemExercise';
+import BackButton from '@app/components/BackButton/BackButton';
 import DisplayList from '@app/components/DisplayList/DisplayList';
+import ListItemExercise from '@app/components/ListItemExercise/ListItemExercise';
+import useWorkouts from '@app/hooks/useWorkouts';
+import styles from '@app/pages/exercises/index.module.scss';
+import { Grid, Typography } from '@mui/material';
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const WorkoutView: NextPage = () => {
   const router = useRouter();
@@ -18,8 +19,10 @@ const WorkoutView: NextPage = () => {
 
 
   return (
-    <Grid container spacing={2} className={styles.exerciseWrapper} flexDirection="column">
+    <Grid container spacing={2} className={styles.exerciseWrapper}>
       <Grid item xs={12} md={9}>
+        <BackButton />
+
         {!isLoading && workout?.exercises && (
           <DisplayList
             items={workout?.exercises}
@@ -33,7 +36,7 @@ const WorkoutView: NextPage = () => {
         <Typography variant="h5">
           <b>Workout:</b> {workout?.title}
         </Typography>
-        <Typography paragraph>
+        <Typography paragraph color="text.secondary">
           {workout?.description}
         </Typography>
       </Grid>

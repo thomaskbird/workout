@@ -1,15 +1,14 @@
-import {Button, Chip, Divider, Grid, Typography} from '@mui/material';
-import {NextPage} from 'next';
-import styles from '@app/pages/exercises/index.module.scss';
-import React, {useEffect, useState} from 'react';
-import {useRouter} from 'next/router';
-import useExercises from '@app/hooks/useExercises';
-import {ExerciseStepType, ExerciseTagType, ExerciseType, TagType} from '@app/types/types';
+import BackButton from '@app/components/BackButton/BackButton';
 import VideoPlayer from '@app/components/VideoPlayer/VideoPlayer';
-import moment from 'moment/moment';
-import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import config from '@app/config/sites';
-import Link from 'next/link';
+import useExercises from '@app/hooks/useExercises';
+import styles from '@app/pages/exercises/index.module.scss';
+import { ExerciseStepType, ExerciseTagType, ExerciseType } from '@app/types/types';
+import { Chip, Divider, Grid, Typography } from '@mui/material';
+import moment from 'moment/moment';
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 type ExerciseViewProps = {};
 
@@ -34,11 +33,7 @@ const ExerciseView: NextPage<ExerciseViewProps> = ({}) => {
   return (
     <Grid container spacing={2} className={styles.exerciseWrapper}>
       <Grid item xs={12} md={9} className={styles.exerciseDisplayWrapper}>
-        <Link href="/exercises">
-          <Button color="inherit" startIcon={<ChevronLeft />}>
-            Back
-          </Button>
-        </Link>
+        <BackButton />
 
         <Typography variant="body2" color="text.secondary">Created by: {exercise?.userId}</Typography>
         <Typography variant="body2" color="text.secondary">Created on: {moment(exercise?.createdAt.toDate()).format(config.momentFormatWoTimestamp)}</Typography>

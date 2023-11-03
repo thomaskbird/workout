@@ -2,14 +2,28 @@ import useUser from '@app/hooks/useUser';
 import { selectUser } from '@app/store/selectors/session';
 import { useSession } from '@app/store/useSession';
 import { WorkoutType } from '@app/types/types';
-import { Favorite as FavoriteIcon, Share as ShareIcon } from '@mui/icons-material';
-import { Button, Card, CardActions, CardContent, IconButton, Typography } from '@mui/material';
+import { Delete as DeleteIcon, Favorite as FavoriteIcon, Share as ShareIcon, } from '@mui/icons-material';
+import { Button, Card, CardActions, CardContent, CardHeader, IconButton, Typography } from '@mui/material';
 import Link from 'next/link';
+import ListItemMenu from '../ListItemMenu/ListItemMenu';
+import { MenuItemType } from '../ListItemMenu/ListItemMenu.types';
 import styles from './ListItemWorkout.module.scss';
 
 type WorkoutListItemType = {
   workout: WorkoutType
 }
+
+const listItems: MenuItemType[] = [
+  {
+    icon: <DeleteIcon fontSize="small" />,
+    onAction: () => {
+      if (window.confirm('Are you sure you want to delete this? It can\'t be undone')) {
+        console.log('onAction()'); 
+      }
+    },
+    text: 'Delete'
+  }
+];
 
 const ListItemWorkout = ({ workout }: WorkoutListItemType) => {
   const { updateUserField } = useUser();
@@ -20,6 +34,9 @@ const ListItemWorkout = ({ workout }: WorkoutListItemType) => {
 
   return (
     <Card className={styles.root}>
+      <CardHeader 
+        action={<ListItemMenu listItems={listItems} />}
+      />
       <CardContent>
         <Typography variant="h5">
           {workout.title}

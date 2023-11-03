@@ -46,6 +46,7 @@ const ListItemExercise = ({ exercise }: ListItemExerciseProps) => {
 
   const handleFavoriteToggle = async () => await updateUserField('favExercises', exercise.id);
 
+  if(!exercise) return null;
   return (
     <Card className={styles.root}>
       <CardHeader

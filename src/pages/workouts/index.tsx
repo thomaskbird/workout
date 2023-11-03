@@ -1,16 +1,15 @@
-import { NextPage } from 'next'
-import React from 'react'
-import styles from '@app/pages/workouts/index.module.scss';
-import {Button, Grid, TextField, Typography, Autocomplete, Box, Card, CardContent, CardActions} from '@mui/material';
-import FormGroup from '@app/components/FormGroup/FormGroup';
+import DisplayList from '@app/components/DisplayList/DisplayList';
 import ErrorList from '@app/components/ErrorList/ErrorList';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {Timestamp} from '@firebase/firestore';
-import {useRouter} from 'next/router';
+import FormGroup from '@app/components/FormGroup/FormGroup';
+import ListItemWorkout from '@app/components/ListItemWorkout/ListItemWorkout';
 import useExercises from '@app/hooks/useExercises';
 import useWorkouts from '@app/hooks/useWorkouts';
-import DisplayList from '@app/components/DisplayList/DisplayList';
-import ListItemWorkout from '@app/components/ListItemWorkout/ListItemWorkout';
+import styles from '@app/pages/workouts/index.module.scss';
+import { Timestamp } from '@firebase/firestore';
+import { Autocomplete, Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 export type WorkoutInputs = {
   title: string;
@@ -40,10 +39,10 @@ const FIELD_RULES = {
 
 const WorkoutsView: NextPage = () => {
   const router = useRouter();
-  const { exercises} = useExercises();
+  const { exercises } = useExercises();
   const { isLoading: isLoadingWorkouts, workouts, addWorkouts } = useWorkouts();
 
-  const exerciseOptions = exercises.map(exercise => ({ title: exercise.title, id: exercise.id }));
+  const exerciseOptions = exercises.map(exercise => ({ id: exercise.id, title: exercise.title, createdAt: exercise.createdAt }));
 
   const {
     register,
