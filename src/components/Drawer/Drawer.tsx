@@ -1,4 +1,5 @@
 import { Link, List, ListItemButton, SwipeableDrawer, Typography } from "@mui/material";
+import React from "react";
 import { pages } from "../Header/Header.config";
 import styles from './Drawer.module.scss';
 
@@ -9,7 +10,7 @@ export type DrawerProps = {
 
 const Drawer = ({ drawerOpen, onDrawerOpenChange }: DrawerProps) => {
   return (
-    <div className={styles.test}>
+    <React.Fragment>
       <SwipeableDrawer
         anchor="left"
         open={drawerOpen}
@@ -29,7 +30,7 @@ const Drawer = ({ drawerOpen, onDrawerOpenChange }: DrawerProps) => {
         ))}
         </List>
       </SwipeableDrawer>
-    </div>
+    </React.Fragment>
   )
 }
 
