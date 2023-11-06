@@ -1,8 +1,7 @@
-import {Autocomplete, TextField} from '@mui/material';
-import {TagType} from '@app/types/types';
 import FormGroup from '@app/components/FormGroup/FormGroup';
-import React from 'react';
 import useTags from '@app/hooks/useTags';
+import { TagType } from '@app/types/types';
+import { Autocomplete, TextField } from '@mui/material';
 
 export type TagInputProps = {
   indentifier: string;
@@ -13,7 +12,7 @@ export type TagInputProps = {
 }
 
 const TagInput = ({ indentifier, label, placeholder, selectedTags, onSetSelectedTags }: TagInputProps) => {
-  const { tags, addTag} = useTags();
+  const { tags, addTag } = useTags();
 
   return (
     <FormGroup>

@@ -1,10 +1,11 @@
-import {AppBar, Box, Container, IconButton, Menu, MenuItem, Toolbar, Typography} from '@mui/material';
-import AdbIcon from '@mui/icons-material/Adb';
-import Link from 'next/link';
-import MenuIcon from '@mui/icons-material/Menu';
-import Button from '@mui/material/Button';
-import React, {useState} from 'react';
 import AccountMenu from '@app/components/AccountMenu/AccountMenu';
+import AdbIcon from '@mui/icons-material/Adb';
+import MenuIcon from '@mui/icons-material/Menu';
+import { AppBar, Box, Container, IconButton, Menu, MenuItem, SwipeableDrawer, Toolbar, Typography } from '@mui/material';
+import Button from '@mui/material/Button';
+import Link from 'next/link';
+import React, { useState } from 'react';
+import styles from './Header.module.scss';
 
 const pages = [
   { id: 1, link: '/', text: 'Dashboard'},
@@ -14,6 +15,7 @@ const pages = [
 
 const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -51,14 +53,28 @@ const Header = () => {
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
+              color="inherit"
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              className={styles.buttonDesktopMenu}
             >
               <MenuIcon />
             </IconButton>
+            
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-drawer"
+              aria-haspopup="true"
+              color="inherit"
+              onClick={() => setIsDrawerOpen(prevState => !prevState)}
+              className={styles.buttonMobileMenu}
+            >
+              <MenuIcon />
+            </IconButton>
+
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -121,6 +137,23 @@ const Header = () => {
           <AccountMenu />
         </Toolbar>
       </Container>
+
+      <React.Fragment>
+          <SwipeableDrawer
+            anchor="left"
+            open={isDrawerOpen}
+            onClose={() => setIsDrawerOpen(false)}
+            onOpen={() => setIsDrawerOpen(true)}
+          >
+            {pages.map((page) => (
+              <Link href={page.link} key={page.id}>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{page.text}</Typography>
+                </MenuItem>
+              </Link>
+            ))}
+          </SwipeableDrawer>
+        </React.Fragment>
     </AppBar>
   )
 }

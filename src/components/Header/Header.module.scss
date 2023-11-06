@@ -1,0 +1,9 @@
+.buttonDesktopMenu {
+    display: none;
+}
+
+.buttonMobileMenu {
+  @media(min-width: 900px) {
+    display: none;
+  }
+}
