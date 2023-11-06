@@ -64,6 +64,7 @@ const ListItemExercise = ({ exercise }: ListItemExerciseProps) => {
           component="img"
           alt={exercise.title}
           image={exercise.thumbnail}
+          className={styles.media}
           style={{
             maxHeight: '200px'
           }}

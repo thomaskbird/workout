@@ -1,13 +1,13 @@
-import {useEffect, useState} from 'react';
-import {addDoc, doc, getDoc, getDocs, QuerySnapshot, Timestamp} from '@firebase/firestore';
-import {collectionTags, firestoreDb, queryAllTagsOrdered} from '@app/services/firebase';
-import {makeArrayFromSnapshot} from '@app/utils/makeNewArray';
-import {useGlobalStore} from '@app/store/useGlobalStore';
-import {selectIsLoading, selectSetIsLoading} from '@app/store/selectors/globalStore';
-import {useSession} from '@app/store/useSession';
-import {selectUser} from '@app/store/selectors/session';
-import {TagType} from '@app/types/types';
+import { collectionTags, firestoreDb, queryAllTagsOrdered } from '@app/services/firebase';
+import { selectIsLoading, selectSetIsLoading } from '@app/store/selectors/globalStore';
+import { selectUser } from '@app/store/selectors/session';
+import { useGlobalStore } from '@app/store/useGlobalStore';
+import { useSession } from '@app/store/useSession';
+import { TagType } from '@app/types/types';
+import { makeArrayFromSnapshot } from '@app/utils/makeNewArray';
 import makeSlug from '@app/utils/makeSlug';
+import { QuerySnapshot, Timestamp, addDoc, doc, getDoc, getDocs } from '@firebase/firestore';
+import { useEffect, useState } from 'react';
 
 type UseTagsReturn = {
   isLoading: boolean;
@@ -28,8 +28,9 @@ const useTags = (): UseTagsReturn => {
       setIsLoading(true);
       const tagsSnapshot: QuerySnapshot = await getDocs(queryAllTagsOrdered);
       const tagsFromDb = makeArrayFromSnapshot(tagsSnapshot);
+      const tagsSorted = tagsFromDb.sort().reverse();
 
-      setTags(tagsFromDb);
+      setTags(tagsSorted);
     } catch (e) {
       console.warn('Error: ', e);
     } finally {

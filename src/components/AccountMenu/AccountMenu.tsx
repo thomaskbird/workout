@@ -86,12 +86,14 @@ const AccountMenu = () => {
           </MenuItem>
         </Link>
         <Divider />
-        <MenuItem>
-          <ListItemIcon>
-            <Favorite fontSize="small" />
-          </ListItemIcon>
-          My Favorites
-        </MenuItem>
+        <Link href="/favorites">
+          <MenuItem>
+            <ListItemIcon>
+              <Favorite fontSize="small" />
+            </ListItemIcon>
+            My Favorites
+          </MenuItem>
+        </Link>
         <Link href="/settings">
           <MenuItem onClick={handleClose}>
             <ListItemIcon>

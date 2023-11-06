@@ -1,7 +1,7 @@
-import {NextPage} from 'next';
-import {Divider, Grid, ListItemText, MenuItem, MenuList, Paper, Typography} from '@mui/material';
-import {useSession} from '@app/store/useSession';
-import {selectUser} from '@app/store/selectors/session';
+import { selectUser } from '@app/store/selectors/session';
+import { useSession } from '@app/store/useSession';
+import { Divider, Grid, ListItemText, MenuItem, MenuList, Paper, Typography } from '@mui/material';
+import { NextPage } from 'next';
 
 const ProfileView: NextPage = () => {
   const user = useSession(selectUser);
