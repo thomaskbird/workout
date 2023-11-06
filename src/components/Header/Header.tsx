@@ -5,13 +5,8 @@ import { AppBar, Box, Container, IconButton, Menu, MenuItem, SwipeableDrawer, To
 import Button from '@mui/material/Button';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { pages } from './Header.config';
 import styles from './Header.module.scss';
-
-const pages = [
-  { id: 1, link: '/', text: 'Dashboard'},
-  { id: 2, link: '/workouts', text: 'Workouts'},
-  { id: 3, link: '/exercises', text: 'Exercises'}
-];
 
 const Header = () => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -139,21 +134,21 @@ const Header = () => {
       </Container>
 
       <React.Fragment>
-          <SwipeableDrawer
-            anchor="left"
-            open={isDrawerOpen}
-            onClose={() => setIsDrawerOpen(false)}
-            onOpen={() => setIsDrawerOpen(true)}
-          >
-            {pages.map((page) => (
-              <Link href={page.link} key={page.id}>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page.text}</Typography>
-                </MenuItem>
-              </Link>
-            ))}
-          </SwipeableDrawer>
-        </React.Fragment>
+        <SwipeableDrawer
+          anchor="left"
+          open={isDrawerOpen}
+          onClose={() => setIsDrawerOpen(false)}
+          onOpen={() => setIsDrawerOpen(true)}
+        >
+          {pages.map((page) => (
+            <Link href={page.link} key={page.id}>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">{page.text}</Typography>
+              </MenuItem>
+            </Link>
+          ))}
+        </SwipeableDrawer>
+      </React.Fragment>
     </AppBar>
   )
 }
