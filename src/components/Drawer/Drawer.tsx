@@ -1,4 +1,4 @@
-import { Link, List, ListItem, SwipeableDrawer, Typography } from "@mui/material";
+import { Link, List, ListItemButton, SwipeableDrawer, Typography } from "@mui/material";
 import { pages } from "../Header/Header.config";
 import styles from './Drawer.module.scss';
 
@@ -22,9 +22,9 @@ const Drawer = ({ drawerOpen, onDrawerOpenChange }: DrawerProps) => {
         <List>
         {pages.map((page) => (
           <Link href={page.link} key={page.id}>
-            <ListItem>
-              <Typography textAlign="center">{page.text}</Typography>
-            </ListItem>
+            <ListItemButton>
+              <Typography>{page.text}</Typography>
+            </ListItemButton>
           </Link>
         ))}
         </List>
