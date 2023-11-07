@@ -5,6 +5,8 @@ import ListItemWorkout from '@app/components/ListItemWorkout/ListItemWorkout';
 import useExercises from '@app/hooks/useExercises';
 import useWorkouts from '@app/hooks/useWorkouts';
 import styles from '@app/pages/workouts/index.module.scss';
+import { selectUser } from '@app/store/selectors/session';
+import { useSession } from '@app/store/useSession';
 import { Timestamp } from '@firebase/firestore';
 import { Autocomplete, Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { NextPage } from 'next';
@@ -39,6 +41,7 @@ const FIELD_RULES = {
 
 const WorkoutsView: NextPage = () => {
   const router = useRouter();
+  const user = useSession(selectUser);
   const { exercises } = useExercises();
   const { isLoading: isLoadingWorkouts, workouts, addWorkouts } = useWorkouts();
 
