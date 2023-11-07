@@ -1,7 +1,7 @@
 import FormGroup from '@app/components/FormGroup/FormGroup';
 import useTags from '@app/hooks/useTags';
 import { TagType } from '@app/types/types';
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, Box, TextField } from '@mui/material';
 
 export type TagInputProps = {
   indentifier: string;
@@ -24,6 +24,9 @@ const TagInput = ({ indentifier, label, placeholder, selectedTags, onSetSelected
         getOptionLabel={(option) => (option as TagType)?.tag}
         filterSelectedOptions
         value={selectedTags}
+        renderOption={(props, option) => (
+          <Box component="li" {...props} key={option.id}>{option.tag}</Box>
+        )}
         freeSolo
         onChange={(evt, val) => {
           const tagsToBeAdded: TagType[] = [];

@@ -39,6 +39,7 @@ const useTags = (): UseTagsReturn => {
   }
 
   // todo: instead of just setTags add new ones and then update existing tags with the new queried result
+  // todo: we should check if a tag exists then reject it and return the existing otherwise add it
   const addTag = async (tag: string) => {
     setIsLoading(true);
     const tagData: Partial<TagType> = {
