@@ -17,7 +17,7 @@ const Drawer = ({ drawerOpen, onDrawerOpenChange }: DrawerProps) => {
         onClose={() => onDrawerOpenChange(false)}
         onOpen={() => onDrawerOpenChange(true)}
         classes={{
-          paper: styles.test
+          paper: styles.wrapper
         }}
       >
         <List>

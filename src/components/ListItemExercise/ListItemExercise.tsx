@@ -1,9 +1,11 @@
 import StyledLink from '@app/components/StyledLink/StyledLink';
 import config from '@app/config/sites';
+import useExercises from '@app/hooks/useExercises';
 import useUser from '@app/hooks/useUser';
 import { selectUser } from '@app/store/selectors/session';
 import { useSession } from '@app/store/useSession';
 import { ExerciseType } from '@app/types/types';
+import prompter from '@app/utils/prompter';
 import {
   Delete as DeleteIcon,
   Favorite as FavoriteIcon,
@@ -19,6 +21,7 @@ import {
   Typography
 } from '@mui/material';
 import moment from 'moment';
+import { useRouter } from 'next/router';
 import ListItemMenu from '../ListItemMenu/ListItemMenu';
 import { MenuItemType } from '../ListItemMenu/ListItemMenu.types';
 import styles from './ListItemExercise.module.scss';
@@ -27,26 +30,33 @@ type ListItemExerciseProps = {
   exercise: ExerciseType;
 }
 
-const listItems: MenuItemType[] = [
-  {
-    icon: <DeleteIcon fontSize="small" />,
-    onAction: () => {
-      if (window.confirm('Are you sure you want to delete this? It can\'t be undone')) {
-        console.log('onAction()'); 
-      }
-    },
-    text: 'Delete'
-  }
-];
-
 const ListItemExercise = ({ exercise }: ListItemExerciseProps) => {
+  const router = useRouter();
   const { updateUserField } = useUser();
+  const { removeExercise } = useExercises();
+
   const user = useSession(selectUser);
   const userFavs = user?.favExercises;
 
-  const handleFavoriteToggle = async () => await updateUserField('favExercises', exercise.id);
+  const listItems: MenuItemType[] = [
+    {
+      icon: <DeleteIcon fontSize="small" />,
+      onAction: () => {
+        prompter('Are you sure you want to delete this? It can\'t be undone', async () => {
+          const result = await removeExercise(exercise.id!);
+          if(result) {
+            router.reload();
+          }
+        });
+      },
+      text: 'Delete'
+    }
+  ];
+
+  const handleFavoriteToggle = async () => await updateUserField('favExercises', exercise.id!);
 
   if(!exercise) return null;
+  
   return (
     <Card className={styles.root}>
       <CardHeader

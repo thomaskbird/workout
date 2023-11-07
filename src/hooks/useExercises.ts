@@ -1,12 +1,12 @@
-import {addDoc, doc, getDoc, QuerySnapshot} from '@firebase/firestore';
-import {collectionExercises, firestoreDb} from '@app/services/firebase';
-import {useEffect, useState} from 'react';
-import {useGlobalStore} from '@app/store/useGlobalStore';
-import {selectIsLoading, selectSetIsLoading} from '@app/store/selectors/globalStore';
-import {ExerciseType} from '@app/types/types';
-import {useSession} from '@app/store/useSession';
-import {selectUser} from '@app/store/selectors/session';
-import {getUserExercises} from '@app/services/exercises';
+import { getUserExercises } from '@app/services/exercises';
+import { collectionExercises, firestoreDb } from '@app/services/firebase';
+import { selectIsLoading, selectSetIsLoading } from '@app/store/selectors/globalStore';
+import { selectUser } from '@app/store/selectors/session';
+import { useGlobalStore } from '@app/store/useGlobalStore';
+import { useSession } from '@app/store/useSession';
+import { ExerciseType } from '@app/types/types';
+import { QuerySnapshot, addDoc, deleteDoc, doc, getDoc } from '@firebase/firestore';
+import { useEffect, useState } from 'react';
 
 const useExercises = () => {
   const isLoading = useGlobalStore(selectIsLoading);
@@ -55,6 +55,21 @@ const useExercises = () => {
     }
   }
 
+  const removeExercise = async (exerciseId: string) => {
+    try {
+      setIsLoading(true);
+      const exerciseRef = doc(firestoreDb, 'exercises', exerciseId);
+      await deleteDoc(exerciseRef);
+
+      return Promise.resolve(true);
+    } catch (e) {
+      console.warn('Error: ', e);
+      Promise.resolve(false);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   useEffect(() => {
     if (user) {
       retrieveAllExercises(); 
@@ -67,6 +82,7 @@ const useExercises = () => {
     addExercise,
     retrieveAllExercises,
     retrieveExerciseById,
+    removeExercise,
   }
 }
 
