@@ -40,7 +40,11 @@ const findOrCreate: FindOrCreateType = async (
       });
     } else {
       const records = makeArrayFromSnapshot(snapShot);
-      return Promise.resolve(records);
+      if(records.length === 1) {
+        return Promise.resolve(records[0]);
+      } else {
+        return Promise.resolve(records);
+      }
     }
   } catch (e) {
     return Promise.reject(e);

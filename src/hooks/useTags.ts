@@ -1,12 +1,13 @@
-import { collectionTags, firestoreDb, queryAllTagsOrdered } from '@app/services/firebase';
+import { queryAllTagsOrdered } from '@app/services/firebase';
 import { selectIsLoading, selectSetIsLoading } from '@app/store/selectors/globalStore';
 import { selectUser } from '@app/store/selectors/session';
 import { useGlobalStore } from '@app/store/useGlobalStore';
 import { useSession } from '@app/store/useSession';
 import { TagType } from '@app/types/types';
+import findOrCreate from '@app/utils/findOrCreate';
 import { makeArrayFromSnapshot } from '@app/utils/makeNewArray';
 import makeSlug from '@app/utils/makeSlug';
-import { QuerySnapshot, Timestamp, addDoc, doc, getDoc, getDocs } from '@firebase/firestore';
+import { QuerySnapshot, Timestamp, getDocs } from '@firebase/firestore';
 import { useEffect, useState } from 'react';
 
 type UseTagsReturn = {
@@ -42,24 +43,18 @@ const useTags = (): UseTagsReturn => {
   // todo: we should check if a tag exists then reject it and return the existing otherwise add it
   const addTag = async (tag: string) => {
     setIsLoading(true);
+    const slug = makeSlug(tag);
     const tagData: Partial<TagType> = {
       tag: tag,
-      slug: makeSlug(tag),
-      userId: user.id,
+      slug: slug,
+      userId: user?.id,
       createdAt: Timestamp.now()
     };
     try {
-      const tagRef = await addDoc(collectionTags, tagData);
-      if(tagRef?.id) {
-        retrieveAllTags();
-      }
+      const tag = await findOrCreate('tags', 'slug', slug, tagData);
+      retrieveAllTags();
 
-      const newlyAddedTag = await getDoc(doc(firestoreDb, 'tags', tagRef.id));
-
-      return {
-        ...newlyAddedTag.data(),
-        id: tagRef?.id
-      }
+      return tag;
     } catch (e) {
       console.warn('Error:',e);
     } finally {
