@@ -82,7 +82,7 @@ const AccountMenu = () => {
       >
         <Link href="/profile">
           <MenuItem onClick={handleClose}>
-            <Avatar /> Profile
+            <Avatar src={userDisplay?.photo ? userDisplay?.photo : '/static/images/avatar/2.jpg'} /> Profile
           </MenuItem>
         </Link>
         <Divider />
