@@ -6,13 +6,14 @@ import { useGlobalStore } from '@app/store/useGlobalStore';
 import { useSession } from '@app/store/useSession';
 import { ExerciseType } from '@app/types/types';
 import { QuerySnapshot, addDoc, deleteDoc, doc, getDoc } from '@firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-const useExercises = () => {
+const useExercises = (id?: string) => {
   const isLoading = useGlobalStore(selectIsLoading);
   const setIsLoading = useGlobalStore(selectSetIsLoading);
   const user = useSession(selectUser);
 
+  const [exercise, setExercise] = useState<ExerciseType | undefined>(undefined);
   const [exercises, setExercises] = useState<ExerciseType[]>([]);
 
   const retrieveAllExercises = async () => {
@@ -22,21 +23,24 @@ const useExercises = () => {
     setIsLoading(false);
   }
 
-  const retrieveExerciseById = async (id: string) => {
-    try {
-      setIsLoading(true);
-      const exerciseSnapshot: QuerySnapshot = await getDoc(doc(firestoreDb, 'exercises', id));
+  const retrieveExerciseById = useCallback(async () => {
+    if(id) {
+      try {
+        setIsLoading(true);
+        const exerciseSnapshot: QuerySnapshot = await getDoc(doc(firestoreDb, 'exercises', id));
 
-      return {
-        ...exerciseSnapshot.data(),
-        id: exerciseSnapshot.id
+        setExercise({
+          ...exerciseSnapshot.data(),
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (e) {
-      console.warn(e);
-    } finally {
-      setIsLoading(false);
+    } else {
+      console.warn('No id available');
     }
-  }
+  }, [id]);
 
   const addExercise = async (data: Partial<ExerciseType>) => {
     const dataWithUser: Partial<ExerciseType> = {
@@ -76,8 +80,13 @@ const useExercises = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+    retrieveExerciseById();
+  }, [id]);
+
   return {
     isLoading,
+    exercise,
     exercises,
     addExercise,
     retrieveAllExercises,

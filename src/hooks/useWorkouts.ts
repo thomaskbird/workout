@@ -25,7 +25,7 @@ const useWorkouts = (id?: string) => {
   const retrieveWorkoutById = useCallback(async () => {
     if(id) {
       try {
-        console.log('try');
+        setIsLoading(true);
         const workoutSnapshot = await getDoc(doc(firestoreDb, 'workouts', id));
         const workoutData = workoutSnapshot.data();
         const exerciseIds = workoutData.exercises.map(exercise => exercise.id);
@@ -40,6 +40,8 @@ const useWorkouts = (id?: string) => {
         });
       } catch (e) {
         console.warn(e);
+      } finally {
+        setIsLoading(false);
       }
     } else {
       console.warn('No id available');

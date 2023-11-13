@@ -3,32 +3,18 @@ import VideoPlayer from '@app/components/VideoPlayer/VideoPlayer';
 import config from '@app/config/sites';
 import useExercises from '@app/hooks/useExercises';
 import styles from '@app/pages/exercises/index.module.scss';
-import { ExerciseStepType, ExerciseTagType, ExerciseType } from '@app/types/types';
+import { ExerciseStepType, ExerciseTagType } from '@app/types/types';
 import { Chip, Divider, Grid, Typography } from '@mui/material';
 import moment from 'moment/moment';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 
 type ExerciseViewProps = {};
 
 const ExerciseView: NextPage<ExerciseViewProps> = ({}) => {
   const router = useRouter();
-  const { retrieveExerciseById } = useExercises();
-
-  const [exercise, setExercise] = useState<ExerciseType | undefined>(undefined);
-
-  useEffect(() => {
-    const retrieveExercise = async () => {
-      const exerciseData = await retrieveExerciseById((router?.query?.exerciseId as string)!);
-      setExercise(exerciseData);
-    }
-
-
-    if(router.isReady) {
-      retrieveExercise();
-    }
-  }, [router])
+  const { exerciseId } = router.query;
+  const { exercise } = useExercises(exerciseId as string);
 
   return (
     <Grid container spacing={2} className={styles.exerciseWrapper}>
