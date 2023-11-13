@@ -1,29 +1,45 @@
 import BackButton from '@app/components/BackButton/BackButton';
 import DisplayList from '@app/components/DisplayList/DisplayList';
 import ListItemExercise from '@app/components/ListItemExercise/ListItemExercise';
-import useWorkouts from '@app/hooks/useWorkouts';
 import styles from '@app/pages/exercises/index.module.scss';
+import { firestoreDb } from '@app/services/firebase';
+import { QuerySnapshot, doc, getDoc } from '@firebase/firestore';
 import { Grid, Typography } from '@mui/material';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const WorkoutView: NextPage = () => {
   const router = useRouter();
   const {workoutId} = router.query;
-  const { isLoading, workout, setId } = useWorkouts();
+  const [workout, setWorkout] = useState(null);
+
+  const retrieveWorkoutById = async () => {
+    try {
+      const workoutSnapshot: QuerySnapshot = await getDoc(doc(firestoreDb, 'workouts', workoutId));
+
+      setWorkout({
+        ...workoutSnapshot.data(),
+        id: workoutSnapshot.id
+      });
+    } catch (e) {
+      console.warn(e);
+    }
+  }
 
   useEffect(() => {
-    setId(workoutId);
+    if(workoutId) {
+      retrieveWorkoutById();
+    }
   }, [workoutId]);
-
-
+  
+  console.log('render()');
   return (
     <Grid container spacing={2} className={styles.exerciseWrapper}>
       <Grid item xs={12} md={9}>
         <BackButton />
 
-        {!isLoading && workout?.exercises && (
+        {workout?.exercises && (
           <DisplayList
             items={workout?.exercises}
             renderChild={(exercise) =>

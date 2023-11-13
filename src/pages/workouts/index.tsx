@@ -11,6 +11,7 @@ import { Timestamp } from '@firebase/firestore';
 import { Autocomplete, Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 export type WorkoutInputs = {
@@ -43,7 +44,9 @@ const WorkoutsView: NextPage = () => {
   const router = useRouter();
   const user = useSession(selectUser);
   const { exercises } = useExercises();
-  const { isLoading: isLoadingWorkouts, workouts, addWorkouts } = useWorkouts();
+  const { isLoading: isLoadingWorkouts, workouts, addWorkouts, retrieveAllWorkouts } = useWorkouts();
+
+  useEffect(() => { retrieveAllWorkouts() }, []);
 
   const exerciseOptions = exercises.map(exercise => ({ id: exercise.id, title: exercise.title, createdAt: exercise.createdAt }));
 

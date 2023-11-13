@@ -8,6 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import Link from 'next/link';
 import React, { useEffect, useState } from "react";
+import SearchInput from '../SearchInput/SearchInput';
 import styles from './AccountMenu.module.scss';
 
 type UserDisplayType = {
@@ -48,6 +49,7 @@ const AccountMenu = () => {
   return (
     <div className={styles.root}>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+        <SearchInput />
         <Tooltip title="Account settings">
           <IconButton
             onClick={handleClick}
