@@ -2,8 +2,9 @@ import BackButton from '@app/components/BackButton/BackButton';
 import DisplayList from '@app/components/DisplayList/DisplayList';
 import ListItemExercise from '@app/components/ListItemExercise/ListItemExercise';
 import styles from '@app/pages/exercises/index.module.scss';
-import { firestoreDb } from '@app/services/firebase';
-import { QuerySnapshot, doc, getDoc } from '@firebase/firestore';
+import { collectionExercises, firestoreDb } from '@app/services/firebase';
+import { makeArrayFromSnapshot } from '@app/utils/makeNewArray';
+import { doc, getDoc, getDocs, query, where } from '@firebase/firestore';
 import { Grid, Typography } from '@mui/material';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -16,11 +17,17 @@ const WorkoutView: NextPage = () => {
 
   const retrieveWorkoutById = async () => {
     try {
-      const workoutSnapshot: QuerySnapshot = await getDoc(doc(firestoreDb, 'workouts', workoutId));
+      const workoutSnapshot = await getDoc(doc(firestoreDb, 'workouts', workoutId));
+      const workoutData = workoutSnapshot.data();
+      const exerciseIds = workoutData.exercises.map(exercise => exercise.id);
+
+      const exercisesSnap = await getDocs(query(collectionExercises, where('id', 'in', exerciseIds)));
+      const exercisesData = makeArrayFromSnapshot(exercisesSnap);
 
       setWorkout({
-        ...workoutSnapshot.data(),
-        id: workoutSnapshot.id
+        ...workoutData,
+        id: workoutSnapshot.id,
+        exercises: exercisesData
       });
     } catch (e) {
       console.warn(e);
@@ -33,7 +40,6 @@ const WorkoutView: NextPage = () => {
     }
   }, [workoutId]);
   
-  console.log('render()');
   return (
     <Grid container spacing={2} className={styles.exerciseWrapper}>
       <Grid item xs={12} md={9}>

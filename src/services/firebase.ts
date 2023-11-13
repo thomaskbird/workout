@@ -1,10 +1,10 @@
 import { getApp, getApps, initializeApp } from "@firebase/app";
-import {Auth, getAuth} from '@firebase/auth';
-import {collection, Firestore, getFirestore, orderBy} from "@firebase/firestore";
+import { Auth, getAuth } from '@firebase/auth';
+import { query } from "@firebase/database";
+import { Firestore, collection, getFirestore, orderBy } from "@firebase/firestore";
+import { FirebaseStorage, getStorage } from '@firebase/storage';
 import moment from "moment";
 import config from "../config/sites";
-import { query } from "@firebase/database";
-import {FirebaseStorage, getStorage, ref} from '@firebase/storage';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -42,23 +42,13 @@ try {
 const collectionExercises = collection(firestoreDb!, 'exercises');
 const collectionWorkouts = collection(firestoreDb!, 'workouts');
 const collectionUsers = collection(firestoreDb!, 'users');
-const collectionTags = collection(firestoreDb, 'tags');
+const collectionTags = collection(firestoreDb!, 'tags');
 
 const queryAllExercisesOrdered = query(collectionExercises);
 const queryAllWorkoutsOrdered = query(collectionWorkouts);
 const queryAllTagsOrdered = query(collectionTags, orderBy('slug', 'desc'));
 
 export {
-  workoutApp,
-  firestoreDb,
-  firebaseStorage,
-  firebaseAuth,
-  renderFirestoreTimestamp,
-  collectionExercises,
-  collectionWorkouts,
-  collectionUsers,
-  collectionTags,
-  queryAllExercisesOrdered,
-  queryAllWorkoutsOrdered,
-  queryAllTagsOrdered,
+  collectionExercises, collectionTags, collectionUsers, collectionWorkouts, firebaseAuth, firebaseStorage, firestoreDb, queryAllExercisesOrdered, queryAllTagsOrdered, queryAllWorkoutsOrdered, renderFirestoreTimestamp, workoutApp
 };
+
