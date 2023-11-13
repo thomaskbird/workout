@@ -16,17 +16,19 @@ const useExercises = (id?: string) => {
   const [exercise, setExercise] = useState<ExerciseType | undefined>(undefined);
   const [exercises, setExercises] = useState<ExerciseType[]>([]);
 
-  const retrieveAllExercises = async () => {
-    setIsLoading(true);
-    const exercisesRecordsFromDb = await getUserExercises(user.id);
-    setExercises(exercisesRecordsFromDb);
-    setIsLoading(false);
-  }
+  const retrieveAllExercises = useCallback(async () => {
+    if(user) {
+      setIsLoading(true);
+      const exercisesRecordsFromDb = await getUserExercises(user.id);
+      setExercises(exercisesRecordsFromDb);
+      setIsLoading(false);
+    }
+  }, [user]);
 
   const retrieveExerciseById = useCallback(async () => {
     if(id) {
+      setIsLoading(true);
       try {
-        setIsLoading(true);
         const exerciseSnapshot: QuerySnapshot = await getDoc(doc(firestoreDb, 'exercises', id));
 
         setExercise({
@@ -75,9 +77,7 @@ const useExercises = (id?: string) => {
   }
 
   useEffect(() => {
-    if (user) {
-      retrieveAllExercises(); 
-    }
+    retrieveAllExercises(); 
   }, [user]);
 
   useEffect(() => {
