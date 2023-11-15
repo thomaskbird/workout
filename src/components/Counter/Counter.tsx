@@ -16,7 +16,7 @@ const Counter = () => {
       {isRunning ? (
         <Button color="inherit" onClick={pause}>Pause</Button>
       ): (
-        <Button color="primary" onClick={start}>Start</Button>
+        <Button color="primary" onClick={start} disabled={current === 0}>Start</Button>
       )}
     
       <Button color="error" onClick={reset}>Reset</Button>

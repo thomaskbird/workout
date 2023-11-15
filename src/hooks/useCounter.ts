@@ -18,7 +18,7 @@ const useCounter = (
   }, []);
 
   const start = () => {
-    if(current !== 0) {
+    if(current > 0) {
       setIsRunning(true);
       onStart && onStart();
       const cycler = setInterval(() => {
