@@ -1,4 +1,27 @@
+.root {
+  margin: 20px;
+}
+
+.counterRoot {
+  display: flex;
+}
+
 .main {
   font-size: 60px;
   text-align: center;
+  background: #1976d2;
+  margin: 30px auto;
+  border-radius: 500px;
+  color: #fff;
+  font-weight: 600;
+  display: flex;
+  width: -moz-fit-content;
+  width: 75px;
+  padding: 50px;
+  height: 75px;
+  justify-content: center;
+}
+
+.reset {
+  margin-left: auto !important;
 }

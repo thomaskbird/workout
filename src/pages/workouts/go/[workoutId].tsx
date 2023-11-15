@@ -1,3 +1,4 @@
+import Counter from '@app/components/Counter/Counter';
 import VideoPlayer from '@app/components/VideoPlayer/VideoPlayer';
 import useWorkouts from '@app/hooks/useWorkouts';
 import { ExerciseStepType } from '@app/types/types';
@@ -31,57 +32,65 @@ const DoWorkout: NextPage = () => {
       <Grid item xs={12} md={9}>
         <Box>
           <Stepper activeStep={activeStep} orientation="vertical">
-            {(exercises ?? []).map((step, index) => (
-              <Step key={step.id}>
-                <StepLabel
-                  optional={
-                    index === lastExerciseIndex ? (
-                      <Typography variant="caption">Last step</Typography>
-                    ) : null
-                  }
-                >
-                  {step.title}<br/> <Typography variant="caption">{step.description}</Typography>
-                </StepLabel>
-                
-                <StepContent>
-                  <Grid container>
-                    <Grid md={5}>
-                      <VideoPlayer
-                        url={step.video}
-                        thumbnail={step.thumbnail}
-                      />
-                    </Grid>
-                    <Grid md={7}>
-                      <ol>
-                      {(step.steps ?? []).map((exerciseStep: ExerciseStepType) => (
-                        <li key={exerciseStep.id}>{exerciseStep.val}</li>
-                      ))}
-                      </ol>
-                    </Grid>
-                  </Grid>
+            {(exercises ?? []).map((step, index) => {
+              const duration = parseInt((step?.duration || '0'), 10);
 
-                  <Box sx={{ mb: 2 }}>
-                    <div>
-                      <Button
-                        variant="contained"
-                        onClick={() => setActiveStep((prevActiveStep) => prevActiveStep + 1)}
-                        sx={{ mt: 1, mr: 1 }}
-                      >
-                        {index === lastExerciseIndex ? 'Finish' : 'Continue'}
-                      </Button>
-                      <Button
-                        disabled={index === 0}
-                        onClick={() => setActiveStep((prevActiveStep) => prevActiveStep - 1)}
-                        sx={{ mt: 1, mr: 1 }}
-                      >
-                        Back
-                      </Button>
-                    </div>
-                  </Box>
+              return (
+                <Step key={step.id}>
+                  <StepLabel
+                    optional={
+                      index === lastExerciseIndex ? (
+                        <Typography variant="caption">Last step</Typography>
+                      ) : null
+                    }
+                  >
+                    {step.title}<br/> <Typography variant="caption">{step.description}</Typography>
+                  </StepLabel>
                   
-                </StepContent>
-              </Step>
-            ))}
+                  <StepContent>
+                    <Grid container>
+                      <Grid md={5}>
+                        <VideoPlayer
+                          url={step.video}
+                          thumbnail={step.thumbnail}
+                        />
+                      </Grid>
+                      <Grid md={7}>
+                        {duration > 0 && (
+                          <Counter end={duration} />
+                        )}
+
+                        <ol>
+                        {(step.steps ?? []).map((exerciseStep: ExerciseStepType) => (
+                          <li key={exerciseStep.id}>{exerciseStep.val}</li>
+                        ))}
+                        </ol>
+                      </Grid>
+                    </Grid>
+
+                    <Box sx={{ mb: 2 }}>
+                      <div>
+                        <Button
+                          variant="contained"
+                          onClick={() => setActiveStep((prevActiveStep) => prevActiveStep + 1)}
+                          sx={{ mt: 1, mr: 1 }}
+                        >
+                          {index === lastExerciseIndex ? 'Finish' : 'Continue'}
+                        </Button>
+                        <Button
+                          disabled={index === 0}
+                          onClick={() => setActiveStep((prevActiveStep) => prevActiveStep - 1)}
+                          sx={{ mt: 1, mr: 1 }}
+                        >
+                          Back
+                        </Button>
+                      </div>
+                    </Box>
+                    
+                  </StepContent>
+                </Step>
+              );
+            })}
           </Stepper>
           {activeStep === (exercises ?? []).length && (
             <Paper square elevation={0} sx={{ p: 3 }}>

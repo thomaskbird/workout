@@ -1,26 +1,31 @@
 import useCounter from "@app/hooks/useCounter";
+import { Pause, PlayArrow, RestartAlt } from "@mui/icons-material";
 import { Button, Card, CardActions, CardContent, Typography } from "@mui/material";
 import styles from './Counter.module.scss';
 
-const Counter = () => {
+export type CounterProps = {
+  end: number;
+}
+
+const Counter = ({ end }: CounterProps) => {
   const { current, start, pause, reset, isRunning } = useCounter(
-    5,
+    end,
     () => console.log("started"),
     () => console.log("ended"),
   );
   
   return (
-    <Card>
-      <CardContent>
+    <Card className={styles.root}>
+      <CardContent className={styles.counterRoot}>
         <Typography variant="h1" className={styles.main}>{current}</Typography>
       </CardContent>
       <CardActions>
         {isRunning ? (
-          <Button color="inherit" onClick={pause}>Pause</Button>
+          <Button color="inherit" onClick={pause} startIcon={<Pause />}>Pause exercise</Button>
         ): (
-          <Button color="primary" onClick={start} disabled={current === 0}>Start</Button>
+          <Button color="primary" onClick={start} disabled={current === 0} startIcon={<PlayArrow />}>Start exercise</Button>
         )}
-        <Button color="error" onClick={reset}>Reset</Button>
+        <Button color="error" onClick={reset} className={styles.reset} startIcon={<RestartAlt />}>Reset exercise</Button>
       </CardActions>
     </Card>
   )
