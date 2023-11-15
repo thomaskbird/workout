@@ -54,7 +54,16 @@ const ListItemWorkout = ({ workout }: WorkoutListItemType) => {
         </IconButton>
         
         <Link href={`/workouts/${workout.id}`}>
-          <Button size="small" style={{ marginLeft: 'auto'}}>View</Button>
+          <Button color="inherit" size="small" style={{ marginLeft: 'auto'}}>View</Button>
+        </Link>
+        <Link href={`/workouts/${workout.id}`}>
+          <Button 
+            size="small"
+            disableElevation 
+            variant="contained" 
+          >
+            Start workout
+          </Button>
         </Link>
       </CardActions>
     </Card>
