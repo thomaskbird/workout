@@ -26,11 +26,11 @@ const listItems: MenuItemType[] = [
 ];
 
 const ListItemWorkout = ({ workout }: WorkoutListItemType) => {
-  const { updateUserField } = useUser();
+  const { updateUserFavs } = useUser();
   const user = useSession(selectUser);
   const userFavs = user?.favWorkouts;
   
-  const handleFavoriteToggle = async () => await updateUserField('favWorkouts', workout.id);
+  const handleFavoriteToggle = async () => await updateUserFavs('favWorkouts', workout.id);
 
   return (
     <Card className={styles.root}>

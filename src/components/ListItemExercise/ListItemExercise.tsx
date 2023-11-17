@@ -32,7 +32,7 @@ type ListItemExerciseProps = {
 
 const ListItemExercise = ({ exercise }: ListItemExerciseProps) => {
   const router = useRouter();
-  const { updateUserField } = useUser();
+  const { updateUserFavs } = useUser();
   const { removeExercise } = useExercises();
 
   const user = useSession(selectUser);
@@ -53,7 +53,7 @@ const ListItemExercise = ({ exercise }: ListItemExerciseProps) => {
     }
   ];
 
-  const handleFavoriteToggle = async () => await updateUserField('favExercises', exercise.id!);
+  const handleFavoriteToggle = async () => await updateUserFavs('favExercises', exercise.id!);
 
   if(!exercise) return null;
   

@@ -1,7 +1,9 @@
 import Counter from '@app/components/Counter/Counter';
 import VideoPlayer from '@app/components/VideoPlayer/VideoPlayer';
+import useUser from '@app/hooks/useUser';
 import useWorkouts from '@app/hooks/useWorkouts';
 import { ExerciseStepType } from '@app/types/types';
+import { Timestamp } from '@firebase/firestore';
 import { Grid } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -11,29 +13,51 @@ import StepContent from '@mui/material/StepContent';
 import StepLabel from '@mui/material/StepLabel';
 import Stepper from '@mui/material/Stepper';
 import Typography from '@mui/material/Typography';
+import moment from 'moment';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 const DoWorkout: NextPage = () => {
   const router = useRouter();
   const {workoutId} = router.query;
   const {workout} = useWorkouts(workoutId as string);
+  const { updateUserHistory } = useUser();
 
   const [activeStep, setActiveStep] = useState(0);
 
   const exercises = workout?.exercises;
   const lastExerciseIndex = (exercises ?? []).length - 1;
+  const startOfWorkout = moment();
 
-  console.log(workout);
+  const handleNext = async (lastStep: boolean) => {
+    if(lastStep) {
+      const endOfWorkout = moment();
+      const durationHours = endOfWorkout.diff(startOfWorkout, 'hours');
+      const durationMinutes = endOfWorkout.diff(startOfWorkout, 'minutes');
+      const durationSeconds = endOfWorkout.diff(startOfWorkout, 'seconds');
+
+      const duration = `${durationHours}:${durationMinutes}:${durationSeconds}`;
+
+      await updateUserHistory({
+        id: uuidv4(),
+        workoutId: workoutId as string,
+        workoutDate: Timestamp.now(),
+        duration: duration
+      });
+    }
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  }
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} md={9}>
+      <Grid item xs={12}>
         <Box>
           <Stepper activeStep={activeStep} orientation="vertical">
             {(exercises ?? []).map((step, index) => {
               const duration = parseInt((step?.duration || '0'), 10);
+              const isLastStep = index === lastExerciseIndex;
 
               return (
                 <Step key={step.id}>
@@ -72,10 +96,10 @@ const DoWorkout: NextPage = () => {
                       <div>
                         <Button
                           variant="contained"
-                          onClick={() => setActiveStep((prevActiveStep) => prevActiveStep + 1)}
+                          onClick={() => handleNext(isLastStep)}
                           sx={{ mt: 1, mr: 1 }}
                         >
-                          {index === lastExerciseIndex ? 'Finish' : 'Continue'}
+                          {isLastStep ? 'Finish' : 'Continue'}
                         </Button>
                         <Button
                           disabled={index === 0}
@@ -94,7 +118,7 @@ const DoWorkout: NextPage = () => {
           </Stepper>
           {activeStep === (exercises ?? []).length && (
             <Paper square elevation={0} sx={{ p: 3 }}>
-              <Typography>All steps completed - you&apos;re finished</Typography>
+              <Typography>Add logic to tell the user how long they worked out for here</Typography>
               <Button onClick={() => setActiveStep(0)} sx={{ mt: 1, mr: 1 }}>
                 Reset
               </Button>
@@ -102,7 +126,7 @@ const DoWorkout: NextPage = () => {
           )}
         </Box>
       </Grid>
-      <Grid item xs={12} md={3} flexDirection="column">
+      <Grid item xs={12} flexDirection="column">
         <ol>
           <li>Intro that has the workout title and description with list of all exercises etc and get started button</li>
           <li>A count down from 3 to 1 then start a timer. </li>

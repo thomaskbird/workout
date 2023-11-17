@@ -56,6 +56,13 @@ export type TagType = {
   createdAt: Timestamp;
 }
 
+export type UserHistory = {
+  id: string;
+  workoutId: string;
+  workoutDate: Timestamp;
+  duration: string;
+}
+
 export type UserType = {
   id: string;
   uid: string;
@@ -65,6 +72,7 @@ export type UserType = {
   age: number;
   favExercises?: string[];
   favWorkouts?: string[];
+  history?: UserHistory[];
 }
 
 export type Prettify<T> = {
