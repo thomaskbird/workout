@@ -10,13 +10,13 @@ import React from 'react';
 // import { Provider } from 'react-redux';
 // import { appStore } from '~/redux/app-reducers'
 import Header from '@app/components/Header/Header';
+import Loading from '@app/components/Loading/Loading';
 import theme from '@app/components/theme';
 import { selectIsLoading } from '@app/store/selectors/globalStore';
 import { useGlobalStore } from '@app/store/useGlobalStore';
 import {
   Container,
-  ThemeProvider,
-  Typography
+  ThemeProvider
 } from '@mui/material';
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
@@ -25,12 +25,10 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <ThemeProvider theme={theme}>
       <Header />
-
-      {isLoading && <Typography>Loading...</Typography>}
-
       <Container className="content-container">
         <Component {...pageProps} />
       </Container>
+      <Loading />
     </ThemeProvider>
   )
 }

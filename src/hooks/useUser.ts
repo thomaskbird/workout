@@ -46,6 +46,7 @@ const useUser = () => {
     }
   }
 
+  // todo: build history to store more meta information about workouts eventually
   const updateUserHistory = async (newHistoryItem: UserHistory) => {
     try {
       const updatedUserHistory = user?.history ?? [];
@@ -53,7 +54,14 @@ const useUser = () => {
 
       await updateDoc(userRef, {
         history: updatedUserHistory
-      })
+      });
+
+      setUser({
+        ...user,
+        history: updatedUserHistory
+      });
+
+      return Promise.resolve(true);
     } catch (e) {
       console.warn('Error: ', e);
       return Promise.resolve(false);

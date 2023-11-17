@@ -11,27 +11,30 @@ const ProfileView: NextPage = () => {
       <Grid item xs={12} md={9}>
         <Typography variant="h5">Profile</Typography>
 
-        <Paper>
-          <MenuList>
-            <MenuItem>
-              <ListItemText>Name:</ListItemText>
-              <Typography variant="body2" color="text.secondary">
-                {user?.displayName}
-              </Typography>
-              <Divider />
-            </MenuItem>
-            <MenuItem>
-              <ListItemText>Email:</ListItemText>
-              <Typography variant="body2" color="text.secondary">
-                {user?.email}
-              </Typography>
-              <Divider />
-            </MenuItem>
-          </MenuList>
-        </Paper>
+        {user && (
+          <Paper>
+            <MenuList>
+              <MenuItem>
+                <ListItemText>Name:</ListItemText>
+                <Typography variant="body2" color="text.secondary">
+                  {user?.displayName}
+                </Typography>
+                <Divider />
+              </MenuItem>
+              <MenuItem>
+                <ListItemText>Email:</ListItemText>
+                <Typography variant="body2" color="text.secondary">
+                  {user?.email}
+                </Typography>
+                <Divider />
+              </MenuItem>
+            </MenuList>
+          </Paper>
+        )}
+
       </Grid>
       <Grid item xs={12} md={3}>
-        TEST
+        Sidebar
       </Grid>
     </Grid>
   )

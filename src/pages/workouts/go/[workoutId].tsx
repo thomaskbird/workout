@@ -73,13 +73,13 @@ const DoWorkout: NextPage = () => {
                   
                   <StepContent>
                     <Grid container>
-                      <Grid md={5}>
+                      <Grid item md={5}>
                         <VideoPlayer
                           url={step.video}
                           thumbnail={step.thumbnail}
                         />
                       </Grid>
-                      <Grid md={7}>
+                      <Grid item md={7}>
                         {duration > 0 && (
                           <Counter end={duration} />
                         )}
