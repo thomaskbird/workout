@@ -2,7 +2,7 @@ import { accountManuPaperProps } from '@app/components/AccountMenu/AccountMenu.c
 import useAuth from '@app/hooks/useAuth';
 import { selectUser } from '@app/store/selectors/session';
 import { useSession } from '@app/store/useSession';
-import { Favorite, Logout, Settings } from '@mui/icons-material';
+import { Favorite, History, Logout, Settings } from '@mui/icons-material';
 import { Box, Divider, IconButton, ListItemIcon, Menu, MenuItem } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
@@ -94,6 +94,14 @@ const AccountMenu = () => {
               <Favorite fontSize="small" />
             </ListItemIcon>
             My Favorites
+          </MenuItem>
+        </Link>
+        <Link href="/history">
+          <MenuItem>
+            <ListItemIcon>
+              <History fontSize="small" />
+            </ListItemIcon>
+            History
           </MenuItem>
         </Link>
         <Link href="/settings">

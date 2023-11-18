@@ -43,6 +43,7 @@ const DoWorkout: NextPage = () => {
       await updateUserHistory({
         id: uuidv4(),
         workoutId: workoutId as string,
+        workoutTitle: workout?.title as string,
         workoutDate: Timestamp.now(),
         duration: duration
       });

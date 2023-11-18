@@ -56,7 +56,7 @@ const ListItemWorkout = ({ workout }: WorkoutListItemType) => {
         <Link href={`/workouts/${workout.id}`}>
           <Button color="inherit" size="small" style={{ marginLeft: 'auto'}}>View</Button>
         </Link>
-        <Link href={`/workouts/${workout.id}`}>
+        <Link href={`/workouts/go/${workout.id}`}>
           <Button 
             size="small"
             disableElevation 

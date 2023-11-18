@@ -49,8 +49,7 @@ const useUser = () => {
   // todo: build history to store more meta information about workouts eventually
   const updateUserHistory = async (newHistoryItem: UserHistory) => {
     try {
-      const updatedUserHistory = user?.history ?? [];
-      updatedUserHistory?.push(newHistoryItem);
+      const updatedUserHistory = [...(user?.history ?? []), newHistoryItem];
 
       await updateDoc(userRef, {
         history: updatedUserHistory
