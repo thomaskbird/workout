@@ -53,7 +53,7 @@ const DoWorkout: NextPage = () => {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
+      <Grid item xs={12} md={9}>
         <Box>
           <Stepper activeStep={activeStep} orientation="vertical">
             {(exercises ?? []).map((step, index) => {
@@ -127,7 +127,7 @@ const DoWorkout: NextPage = () => {
           )}
         </Box>
       </Grid>
-      <Grid item xs={12} flexDirection="column">
+      <Grid item xs={12} md={3} flexDirection="column">
         <ol>
           <li>Intro that has the workout title and description with list of all exercises etc and get started button</li>
           <li>A count down from 3 to 1 then start a timer. </li>
