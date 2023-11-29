@@ -1,29 +1,24 @@
-import config from '@app/config/sites';
 import { selectUser } from '@app/store/selectors/session';
 import { useSession } from '@app/store/useSession';
 import { Divider, Grid, ListItemText, MenuItem, MenuList, Paper, Typography } from '@mui/material';
-import moment from 'moment';
 import { NextPage } from 'next';
 
 const HistoryView: NextPage = () => {
   const user = useSession(selectUser);
   const history = user?.history;
 
-  console.log('history', user, history);
-  if(!user || !history) {
-    return null;
-  }
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={9}>
-        <Typography variant="h5">History</Typography>
+        <Typography variant="h4">History</Typography>
+        <Divider />
 
-        <Paper>
-          <MenuList>
+        <Paper style={{ marginTop: 20 }}>
+          <MenuList component="div">
             {(history ?? []).map(item => (
-              <MenuItem key={item.id}>
-                <ListItemText>{item?.workoutTitle} - {moment(item.workoutDate).format(config.dateTimeFormat)}</ListItemText>
+              <MenuItem key={item.id} component="div">
+                <ListItemText>{item?.workoutTitle}</ListItemText>
                 <Typography variant="body2" color="text.secondary">
                   {item.duration}
                 </Typography>

@@ -49,11 +49,16 @@ const useWorkouts = (id?: string) => {
   }, [id]);
 
   const retrieveAllWorkouts = async () => {
-    setIsLoading(true);
-    const workoutsSnapshot: QuerySnapshot = await getUserWorkouts(user.id);
-    const workoutsRecordsFromDb = makeArrayFromSnapshot(workoutsSnapshot);
-    setWorkouts(workoutsRecordsFromDb);
-    setIsLoading(false);
+    try {
+      setIsLoading(true);
+      const workoutsSnapshot: QuerySnapshot = await getUserWorkouts(user.id);
+      const workoutsRecordsFromDb = makeArrayFromSnapshot(workoutsSnapshot);
+      setWorkouts(workoutsRecordsFromDb);
+    } catch (e) {
+      console.warn(e);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const addWorkouts = async (data: Partial<WorkoutType>) => {

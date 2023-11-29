@@ -49,6 +49,17 @@ const queryAllWorkoutsOrdered = query(collectionWorkouts);
 const queryAllTagsOrdered = query(collectionTags, orderBy('slug', 'desc'));
 
 export {
-  collectionExercises, collectionTags, collectionUsers, collectionWorkouts, firebaseAuth, firebaseStorage, firestoreDb, queryAllExercisesOrdered, queryAllTagsOrdered, queryAllWorkoutsOrdered, renderFirestoreTimestamp, workoutApp
+  collectionExercises,
+  collectionTags,
+  collectionUsers,
+  collectionWorkouts,
+  firebaseAuth,
+  firebaseStorage,
+  firestoreDb,
+  queryAllExercisesOrdered,
+  queryAllTagsOrdered,
+  queryAllWorkoutsOrdered,
+  renderFirestoreTimestamp,
+  workoutApp
 };
 

@@ -18,18 +18,24 @@ import {
   Container,
   ThemeProvider
 } from '@mui/material';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import AuthContext from '../hooks/useUserAuth';
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const isLoading = useGlobalStore(selectIsLoading);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Header />
-      <Container className="content-container">
-        <Component {...pageProps} />
-      </Container>
-      <Loading />
-    </ThemeProvider>
+    <AuthContext>
+      <ThemeProvider theme={theme}>
+        <ToastContainer />
+        <Header />
+        <Container className="content-container">
+          <Component {...pageProps} />
+        </Container>
+        <Loading />
+      </ThemeProvider>
+    </AuthContext>
   )
 }
 

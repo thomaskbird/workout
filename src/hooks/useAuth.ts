@@ -1,22 +1,21 @@
-import {useGlobalStore} from '@app/store/useGlobalStore';
-import {selectIsLoading, selectSetIsLoading} from '@app/store/selectors/globalStore';
-import {useState} from 'react';
+import { collectionUsers, firebaseAuth, firestoreDb } from '@app/services/firebase';
+import { selectIsLoading, selectSetIsLoading } from '@app/store/selectors/globalStore';
+import { selectSetUser } from '@app/store/selectors/session';
+import { useGlobalStore } from '@app/store/useGlobalStore';
+import { useSession } from '@app/store/useSession';
+import { UserType } from '@app/types/types';
+import { query } from '@firebase/database';
+import { addDoc, collection, getDocs, where } from '@firebase/firestore';
 import {
+  GoogleAuthProvider,
+  UserCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
-  GoogleAuthProvider,
-  UserCredential,
   signOut
 } from "firebase/auth";
-import Cookies from 'js-cookie';
-import {collectionUsers, firebaseAuth, firestoreDb} from '@app/services/firebase';
-import {useRouter} from 'next/router';
-import {useSession} from '@app/store/useSession';
-import {selectSetUser} from '@app/store/selectors/session';
-import {addDoc, collection, getDocs, where} from '@firebase/firestore';
-import {query} from '@firebase/database';
-import {UserType} from '@app/types/types';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 
 const provider = new GoogleAuthProvider();
 
