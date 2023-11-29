@@ -1,5 +1,5 @@
-import {User} from '@firebase/auth';
-import {UserType} from '@app/types/types';
+import { UserType } from '@app/types/types';
+import { User } from '@firebase/auth';
 
 export type CompiledUserTypes = User & UserType;
 
@@ -8,7 +8,7 @@ export type SessionState = {
 }
 
 export type SessionActions = {
-  setUser: (user: Partial<CompiledUserTypes>) => void;
+  setUser: (user: Partial<CompiledUserTypes> | null) => void;
 }
 
 export type Session = SessionState & SessionActions;

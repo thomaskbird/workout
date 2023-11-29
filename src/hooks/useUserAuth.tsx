@@ -1,4 +1,6 @@
 import { firebaseAuth } from "@app/services/firebase";
+import { selectSetUser, selectUser } from "@app/store/selectors/session";
+import { useSession } from "@app/store/useSession";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
@@ -8,16 +10,23 @@ export const UserContext = React.createContext(null);
 
 const AuthContext = ({ children }: { children: any }) => {
   const router = useRouter();
+  const userSessionData = useSession(selectUser);
+  const setUserSessionData = useSession(selectSetUser);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // todo: need to also check the state user object.
 
   useEffect(() => {
     const unsubscriber = onAuthStateChanged(firebaseAuth, async (user) => {
       try {
         if(user) {
-          console.log('useUserAuth() authenticated', user);
+          setUserSessionData({
+            ...user,
+            ...userSessionData
+          });
         } else {
-          setUser(null);
+          setUserSessionData(null);
           router.push('/account');
         }
       } catch (err) {
@@ -31,9 +40,9 @@ const AuthContext = ({ children }: { children: any }) => {
   }, []);
 
   useEffect(() => {
-    if(!user && router.asPath !== '/account') {
+    if(!user && !userSessionData && router.asPath !== '/account') {
       router.push('/account');
-      toast('You must be logged in to access those pages');
+      toast.error('You must be logged in to access those pages');
     }
   }, [router.isReady, router.asPath]);
 
