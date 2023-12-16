@@ -1,6 +1,8 @@
+import config from '@app/config/sites';
 import { selectUser } from '@app/store/selectors/session';
 import { useSession } from '@app/store/useSession';
 import { Divider, Grid, ListItemText, MenuItem, MenuList, Paper, Typography } from '@mui/material';
+import moment from 'moment';
 import { NextPage } from 'next';
 
 const HistoryView: NextPage = () => {
@@ -20,6 +22,7 @@ const HistoryView: NextPage = () => {
               <MenuItem key={item.id} component="div">
                 <ListItemText>{item?.workoutTitle}</ListItemText>
                 <Typography variant="body2" color="text.secondary">
+                  {moment(item.workoutDate).format(config.dateTimeFormat)}&nbsp;-&nbsp;
                   {item.duration}
                 </Typography>
                 <Divider />
