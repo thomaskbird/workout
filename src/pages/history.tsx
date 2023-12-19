@@ -1,19 +1,12 @@
-import config from '@app/config/sites';
 import { selectUser } from '@app/store/selectors/session';
 import { useSession } from '@app/store/useSession';
 import { Divider, Grid, ListItemText, MenuItem, MenuList, Paper, Typography } from '@mui/material';
-import moment from 'moment';
 import { NextPage } from 'next';
-import {Timestamp} from "@firebase/firestore";
+import convertFirestoreAndFormat from "@app/utils/convertFirestoreAndFormat";
 
 const HistoryView: NextPage = () => {
   const user = useSession(selectUser);
   const history = user?.history;
-
-  const formatDate = (dateTimeStamp: Timestamp) => {
-    const jsTimestamp = new Date(dateTimeStamp.seconds * 1000 + dateTimeStamp.nanoseconds / 1000000);
-    return moment(jsTimestamp).format(config.momentFormat);
-  }
 
   const formatDuration = (duration: string) => {
     const durationParts = duration.split(':');
@@ -46,7 +39,7 @@ const HistoryView: NextPage = () => {
                 <ListItemText>{item?.workoutTitle}</ListItemText>
                 <Typography variant="body2" color="text.secondary">
                   <>
-                    <b>Completed:</b> {formatDate(item.workoutDate)}&nbsp;-&nbsp; <b>Duration:</b> {formatDuration(item.duration)}
+                    <b>Completed:</b> {convertFirestoreAndFormat(item.workoutDate)}&nbsp;-&nbsp; <b>Duration:</b> {formatDuration(item.duration)}
                   </>
                 </Typography>
                 <Divider />
